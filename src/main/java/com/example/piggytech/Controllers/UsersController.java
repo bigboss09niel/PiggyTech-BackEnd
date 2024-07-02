@@ -53,8 +53,13 @@ public class UsersController {
     @RequestBody User newUser){
         return repo.findById(id)
         .map(user ->{
+            user.setName(newUser.getName());
+            user.setAddress(newUser.getAddress());
+            user.setPhone(newUser.getPhone());
             user.setEmail(newUser.getEmail());
             user.setPassword(newUser.getPassword());
+            user.setPhoto(newUser.getPhoto());
+            user.setCreatedAt(newUser.getCreatedAt());
             return repo.save(user);
         }).orElseGet(()->{
             return repo.save(newUser);
