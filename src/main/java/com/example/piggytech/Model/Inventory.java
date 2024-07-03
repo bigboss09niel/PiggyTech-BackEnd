@@ -1,5 +1,7 @@
 package com.example.piggytech.Model;
 
+import java.util.Date;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
@@ -9,59 +11,43 @@ public class Inventory {
 
     private @Id
     @GeneratedValue Long id;
-    private String name;
-    private String receivedDate;
-    private ]String expirationDate;
-    private String quantity;
+    private Date receivedDate;
+    private Date expirationDate;
+    private Long quantity;
 
-   Inventory(){}
+    Inventory(){}
 
-    public Inventory(String name, String receivedDate,String expirationDate ,String quantity) {
-        this.name = name;
+    public Inventory(Date receivedDate, Date expirationDate, Long quantity) {
         this.receivedDate = receivedDate;
         this.expirationDate = expirationDate;
         this.quantity = quantity;
-       
-       
     }
 
     // Setters
-    public void setProductName(String productName) {
-        this.productName = productName;
+    public void setReceivedDate(Date receivedDate) {
+        this.receivedDate = receivedDate;
     }
-    public void setCategoryId(Long categoryId) {
-        this.categoryId = categoryId;
+    public void setExpirationDate(Date expirationDate) {
+        this.expirationDate = expirationDate;
     }
-    public void setPrice(Double price) {
-        this.price = price;
-    }
-    public void setStock(Long stock) {
-        this.stock = stock;
-    }
-    public void setSold(Long sold) {
-        this.sold = sold;
+    public void setQuantity(Long quantity) {
+        this.quantity= quantity;
     }
 
      // Getters
-     public Long getId() {
+    public Long getId() {
         return id;
-     }
-     public String getProductName() {
-        return productName;
     }
-    public Long getCategoryId() {
-        return categoryId;
+    public Date getReceivedDate() {
+        return receivedDate;
     }
-    public Double getPrice() {
-        return price;
+    public Date getExpirationDate() {
+        return expirationDate;
     }
-    public Long getStock() {
-        return stock;
+    public Long getQuantity() {
+        return quantity;
     }
-    public Long getSold() {
-        return sold;
-    }
-
+   
 }
    
 

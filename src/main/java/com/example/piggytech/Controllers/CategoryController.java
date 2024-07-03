@@ -55,7 +55,7 @@ public class CategoryController {
         .map(category ->{
             category.setCategoryName(newCategory.getCategoryName());
             
-            return repo.save(category;
+            return repo.save(category);
         }).orElseGet(()->{
             return repo.save(newCategory);
         });
