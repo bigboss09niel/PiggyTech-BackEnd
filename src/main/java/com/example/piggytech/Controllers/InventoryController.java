@@ -26,7 +26,7 @@ public class InventoryController {
     // GET ALL INVENTORY
     // http://127.0.0.1:8080/inventory
     @GetMapping("/inventory")
-    public List<Inventory> getProducts(){
+    public List<Inventory> getInventory(){
         return repo.findAll();
     }
 
