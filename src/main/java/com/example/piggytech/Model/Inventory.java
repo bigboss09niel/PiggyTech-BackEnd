@@ -13,11 +13,11 @@ public class Inventory {
     @GeneratedValue Long id;
     private Date receivedDate;
     private Date expirationDate;
-    private Long quantity;
+    private int quantity;
 
     Inventory(){}
 
-    public Inventory(Date receivedDate, Date expirationDate, Long quantity) {
+    public Inventory(Date receivedDate, Date expirationDate, int quantity) {
         this.receivedDate = receivedDate;
         this.expirationDate = expirationDate;
         this.quantity = quantity;
@@ -30,7 +30,7 @@ public class Inventory {
     public void setExpirationDate(Date expirationDate) {
         this.expirationDate = expirationDate;
     }
-    public void setQuantity(Long quantity) {
+    public void setQuantity(int quantity) {
         this.quantity= quantity;
     }
 
@@ -44,7 +44,7 @@ public class Inventory {
     public Date getExpirationDate() {
         return expirationDate;
     }
-    public Long getQuantity() {
+    public int getQuantity() {
         return quantity;
     }
    
