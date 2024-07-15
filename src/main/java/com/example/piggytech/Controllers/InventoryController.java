@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.piggytech.Model.Inventory;
@@ -15,6 +16,7 @@ import com.example.piggytech.NotFoundException.InventoryNotFoundException;
 import com.example.piggytech.Repository.InventoryRepository;
 
 @RestController
+@RequestMapping("/api/v1/inventory")
 public class InventoryController {
     
     InventoryRepository repo;
@@ -24,31 +26,27 @@ public class InventoryController {
     }
 
     // GET ALL INVENTORY
-    // http://127.0.0.1:8080/inventory
-    @GetMapping("/inventory")
+    @GetMapping("/all")
     public List<Inventory> getInventory(){
         return repo.findAll();
     }
 
     // GET ONE INVENTORY
-    // http://127.0.0.1:8080/inventory/1
-    @GetMapping("/inventory/{id}")
+    @GetMapping("/{id}")
     public Inventory getInventoryById(@PathVariable Long id){
         return repo.findById(id)
         .orElseThrow(()-> new InventoryNotFoundException(id));
     }
 
     // CREATE ENDPOINTS
-    // http://127.0.0.1:8080/inventory/new
-    @PostMapping("/inventory/new")
+    @PostMapping("/new")
     public String addInventory(@RequestBody Inventory newInventory){
         repo.save(newInventory);
         return "A new inventory is added. Yey!";
     }
 
     // UPDATE ENDPOINTS
-    // http://127.0.0.1:8080/inventory/edit/1
-    @PutMapping("/inventory/edit/{id}")
+    @PutMapping("/edit/{id}")
     public Inventory updateInventory(@PathVariable Long id,
     @RequestBody Inventory newInventory){
         return repo.findById(id)
@@ -63,8 +61,7 @@ public class InventoryController {
     }
 
     // DELETE ENDPOINTS
-    // http://127.0.0.1:8080/inventory/delete/1
-    @DeleteMapping("/inventory/delete/{id}")
+    @DeleteMapping("/delete/{id}")
     public String deleteInventory(@PathVariable Long id){
         repo.deleteById(id);
         return "A inventory is deleted!";

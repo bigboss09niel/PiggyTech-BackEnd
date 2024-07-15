@@ -40,6 +40,7 @@ public class UserAuth {
         this.username = username;
         this.email = email;
         this.password = password;
+       
     }
 
     // Setters
@@ -75,5 +76,4 @@ public class UserAuth {
     public Set<Role> getRoles() {
         return roles;
     }
-
 }

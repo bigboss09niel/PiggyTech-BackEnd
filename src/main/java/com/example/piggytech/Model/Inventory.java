@@ -11,19 +11,24 @@ public class Inventory {
 
     private @Id
     @GeneratedValue Long id;
+    private Long productId;
     private Date receivedDate;
     private Date expirationDate;
     private int quantity;
 
     Inventory(){}
 
-    public Inventory(Date receivedDate, Date expirationDate, int quantity) {
+    public Inventory(Long productId, Date receivedDate, Date expirationDate, int quantity) {
+        this.productId = productId;
         this.receivedDate = receivedDate;
         this.expirationDate = expirationDate;
         this.quantity = quantity;
     }
 
     // Setters
+    public void setProductId(Long productId) {
+        this.productId = productId;
+    }
     public void setReceivedDate(Date receivedDate) {
         this.receivedDate = receivedDate;
     }
@@ -37,6 +42,9 @@ public class Inventory {
      // Getters
     public Long getId() {
         return id;
+    }
+    public Long getproductId() {
+        return productId;
     }
     public Date getReceivedDate() {
         return receivedDate;

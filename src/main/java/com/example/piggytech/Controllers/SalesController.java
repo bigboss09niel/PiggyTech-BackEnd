@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.piggytech.Model.Sales;
@@ -15,6 +16,7 @@ import com.example.piggytech.NotFoundException.SalesNotFoundException;
 import com.example.piggytech.Repository.SalesRepository;
 
 @RestController
+@RequestMapping("/api/v1/sales")
 public class SalesController {
     
     SalesRepository repo;
@@ -24,31 +26,27 @@ public class SalesController {
     }
 
     // GET ALL SALES
-    // http://127.0.0.1:8080/sales
-    @GetMapping("/sales")
+    @GetMapping("/all")
     public List<Sales> getProducts(){
         return repo.findAll();
     }
 
     // GET ONE INVENTORY
-    // http://127.0.0.1:8080/sales/1
-    @GetMapping("/sales/{id}")
+    @GetMapping("/{id}")
     public Sales getSalesyById(@PathVariable Long id){
         return repo.findById(id)
         .orElseThrow(()-> new SalesNotFoundException(id));
     }
 
     // CREATE ENDPOINTS
-    // http://127.0.0.1:8080/sales/new
-    @PostMapping("/sales/new")
+    @PostMapping("/new")
     public String addSales(@RequestBody Sales newSales){
         repo.save(newSales);
         return "A new sales is added. Yey!";
     }
 
     // UPDATE ENDPOINTS
-    // http://127.0.0.1:8080/sales/edit/1
-    @PutMapping("/sales/edit/{id}")
+    @PutMapping("/edit/{id}")
     public Sales updateSales(@PathVariable Long id,
     @RequestBody Sales newSales){
         return repo.findById(id)
@@ -63,8 +61,7 @@ public class SalesController {
     }
 
     // DELETE ENDPOINTS
-    // http://127.0.0.1:8080/sales/delete/1
-    @DeleteMapping("/sales/delete/{id}")
+    @DeleteMapping("/delete/{id}")
     public String deleteSales(@PathVariable Long id){
         repo.deleteById(id);
         return "A sales is deleted!";

@@ -7,46 +7,36 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 
 @Entity
-public class User {
+public class UserDetail {
 
     private @Id
     @GeneratedValue Long id;
-    private String name;
+    private Long userAuthId;
     private String address;
     private String phone;
-    private String email;
-    private String password;
     private String photo;
     private Date createdAt;
 
-    
-    User(){}
 
-    public User(String name, String address, String phone,String email, String password, String photo, Date createdAt) {
-        this.name = name;
+    UserDetail(){}
+
+    public UserDetail( Long userAuthId, String address, String phone, String photo, Date createdAt) {
+        this.userAuthId = userAuthId;
         this.address = address;
         this.phone = phone;
-        this.email = email;
-        this.password = password;
         this.photo = photo;
         this.createdAt = createdAt;
     }
 
-    // Setters
-    public void setName(String name) {
-        this.name = name;
+    //setters
+    public void setUserAuthId(Long userAuthId) {
+        this.userAuthId = userAuthId;
     }
-    public void setAddress(String address) {
+     public void setAddress(String address) {
         this.address = address;
     }
     public void setPhone(String phone) {
         this.phone = phone;
-    }
-    public void setEmail(String email) {
-        this.email = email;
-    }
-    public void setPassword(String password) {
-        this.password = password;
     }
     public void setPhoto(String photo) {
         this.photo = photo;
@@ -54,13 +44,13 @@ public class User {
     public void setCreatedAt(Date createdAt) {
         this.createdAt = createdAt;
     }
-    
-    // Getters
+
+    //getters
     public Long getId() {
         return id;
     }
-    public String getName() {
-        return name;
+    public Long getUserAuthId() {
+        return userAuthId;
     }
     public String getAddress() {
         return address;
@@ -68,17 +58,12 @@ public class User {
     public String getPhone() {
         return phone;
     }
-    public String getEmail() {
-        return email;
-    }
-    public String getPassword() {
-        return password;
-    }
     public String getPhoto() {
         return photo;
     }
     public Date getCreatedAt() {
         return createdAt;
     }
+
 
 }
