@@ -24,43 +24,6 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Table structure for table `category`
---
-
-CREATE TABLE `category` (
-  `id` bigint(20) NOT NULL,
-  `category_name` varchar(255) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `category`
---
-
-INSERT INTO `category` (`id`, `category_name`) VALUES
-(1, 'Booster'),
-(2, 'Grower'),
-(3, 'Starter');
-
--- --------------------------------------------------------
-
---
--- Table structure for table `category_seq`
---
-
-CREATE TABLE `category_seq` (
-  `next_val` bigint(20) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `category_seq`
---
-
-INSERT INTO `category_seq` (`next_val`) VALUES
-(101);
-
--- --------------------------------------------------------
-
---
 -- Table structure for table `inventory`
 --
 
@@ -106,7 +69,6 @@ INSERT INTO `inventory_seq` (`next_val`) VALUES
 
 CREATE TABLE `product` (
   `id` bigint(20) NOT NULL,
-  `category_id` bigint(20) DEFAULT NULL,
   `price` double DEFAULT NULL,
   `product_name` varchar(255) DEFAULT NULL,
   `sold` bigint(20) DEFAULT NULL,
@@ -117,10 +79,10 @@ CREATE TABLE `product` (
 -- Dumping data for table `product`
 --
 
-INSERT INTO `product` (`id`, `category_id`, `price`, `product_name`, `sold`, `stock`) VALUES
-(1, 1, 1250, 'Mega', 14, 25),
-(2, 2, 1400, 'Cj Supreme Pre', 14, 25),
-(3, 3, 1350, 'Muscle Max', 14, 25);
+INSERT INTO `product` (`id`, `price`, `product_name`, `sold`, `stock`) VALUES
+(1, 1250, 'Mega', 14, 25),
+(2, 1400, 'Cj Supreme Pre', 14, 25),
+(3, 1350, 'Muscle Max', 14, 25);
 
 -- --------------------------------------------------------
 
@@ -288,12 +250,6 @@ INSERT INTO `user_role` (`used_id`, `role_id`) VALUES
 --
 -- Indexes for dumped tables
 --
-
---
--- Indexes for table `category`
---
-ALTER TABLE `category`
-  ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `inventory`
