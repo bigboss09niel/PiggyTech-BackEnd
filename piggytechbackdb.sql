@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.2.1
+-- version 5.2.0
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 16, 2024 at 04:00 AM
--- Server version: 10.4.32-MariaDB
--- PHP Version: 8.2.12
+-- Generation Time: Jul 17, 2024 at 09:34 AM
+-- Server version: 10.4.27-MariaDB
+-- PHP Version: 8.2.0
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -72,17 +72,18 @@ CREATE TABLE `product` (
   `price` double DEFAULT NULL,
   `product_name` varchar(255) DEFAULT NULL,
   `sold` bigint(20) DEFAULT NULL,
-  `stock` bigint(20) DEFAULT NULL
+  `stock` bigint(20) DEFAULT NULL,
+  `photo` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `product`
 --
 
-INSERT INTO `product` (`id`, `price`, `product_name`, `sold`, `stock`) VALUES
-(1, 1250, 'Mega', 14, 25),
-(2, 1400, 'Cj Supreme Pre', 14, 25),
-(3, 1350, 'Muscle Max', 14, 25);
+INSERT INTO `product` (`id`, `price`, `product_name`, `sold`, `stock`, `photo`) VALUES
+(1, 1250, 'Mega', 14, 25, 'https://cdn.vectorstock.com/i/1000v/09/60/piggy-vector-2900960.jpg'),
+(2, 1400, 'Cj Supreme Pre', 14, 25, 'https://cdn.vectorstock.com/i/1000v/09/60/piggy-vector-2900960.jpg'),
+(3, 1350, 'Muscle Max', 14, 25, 'https://cdn.vectorstock.com/i/1000v/09/60/piggy-vector-2900960.jpg');
 
 -- --------------------------------------------------------
 
