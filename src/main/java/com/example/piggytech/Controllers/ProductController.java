@@ -53,10 +53,10 @@ public class ProductController {
         return repo.findById(id)
         .map(product -> {
             product.setProductName(newProduct.getProductName());
-            product.setCategoryId(newProduct.getCategoryId());
             product.setPrice(newProduct.getPrice());
             product.setStock(newProduct.getStock());
             product.setSold(newProduct.getSold());
+            product.setPhoto(newProduct.getPhoto());
             return repo.save(product);
         }).orElseGet(()->{
             return repo.save(newProduct);

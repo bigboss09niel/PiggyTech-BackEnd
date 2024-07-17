@@ -10,28 +10,25 @@ public class Product {
     private @Id
     @GeneratedValue Long id;
     private String productName;
-    private Long categoryId;
     private Double price;
     private Long stock;
     private Long sold;
+    private String photo;
 
     Product(){}
 
-    public Product(String productName, Long categoryId, Double price ,Long stock, Long sold) {
+    public Product(String productName, Double price ,Long stock, Long sold, String photo) {
         this.productName = productName;
-        this.categoryId = categoryId;
         this.price = price;
         this.stock = stock;
         this.sold = sold;
+        this.photo = photo;
        
     }
 
     // Setters
     public void setProductName(String productName) {
         this.productName = productName;
-    }
-    public void setCategoryId(Long categoryId) {
-        this.categoryId = categoryId;
     }
     public void setPrice(Double price) {
         this.price = price;
@@ -42,6 +39,10 @@ public class Product {
     public void setSold(Long sold) {
         this.sold = sold;
     }
+    public void setPhoto(String photo) {
+        this.photo = photo;
+    }
+
 
      // Getters
      public Long getId() {
@@ -49,9 +50,6 @@ public class Product {
      }
      public String getProductName() {
         return productName;
-    }
-    public Long getCategoryId() {
-        return categoryId;
     }
     public Double getPrice() {
         return price;
@@ -61,6 +59,9 @@ public class Product {
     }
     public Long getSold() {
         return sold;
+    }
+    public String getPhoto() {
+        return photo;
     }
 
 }
