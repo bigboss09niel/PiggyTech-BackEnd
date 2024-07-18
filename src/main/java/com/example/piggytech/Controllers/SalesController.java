@@ -27,7 +27,7 @@ public class SalesController {
 
     // GET ALL SALES
     @GetMapping("/all")
-    public List<Sales> getProducts(){
+    public List<Sales> getSales(){
         return repo.findAll();
     }
 
