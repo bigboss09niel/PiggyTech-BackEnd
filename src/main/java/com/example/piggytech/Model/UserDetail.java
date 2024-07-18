@@ -2,26 +2,36 @@ package com.example.piggytech.Model;
 
 import java.util.Date;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.OneToOne;
+import jakarta.persistence.Table;
 
 @Entity
+@Table(name = "user_detail")
 public class UserDetail {
 
     private @Id
-    @GeneratedValue Long id;
-    private Long userAuthId;
+    @GeneratedValue Long userDetailId;
     private String address;
     private String phone;
     private String photo;
     private Date createdAt;
 
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinTable(name = "userauth_userdetail",
+        joinColumns = { @JoinColumn(name = "user_detail_id", referencedColumnName = "userDetailId") },
+        inverseJoinColumns = { @JoinColumn(name = "user_auth_id", referencedColumnName = "id") }
+    )
+    private UserAuth userAuth;
 
     UserDetail(){}
 
-    public UserDetail( Long userAuthId, String address, String phone, String photo, Date createdAt) {
-        this.userAuthId = userAuthId;
+    public UserDetail(String address, String phone, String photo, Date createdAt) {
         this.address = address;
         this.phone = phone;
         this.photo = photo;
@@ -29,9 +39,6 @@ public class UserDetail {
     }
 
     //setters
-    public void setUserAuthId(Long userAuthId) {
-        this.userAuthId = userAuthId;
-    }
      public void setAddress(String address) {
         this.address = address;
     }
@@ -44,13 +51,13 @@ public class UserDetail {
     public void setCreatedAt(Date createdAt) {
         this.createdAt = createdAt;
     }
+    public void setUserAuth(UserAuth userAuth) {
+        this.userAuth = userAuth;
+    }
 
     //getters
-    public Long getId() {
-        return id;
-    }
-    public Long getUserAuthId() {
-        return userAuthId;
+    public Long getIdDetailId() {
+        return userDetailId;
     }
     public String getAddress() {
         return address;
@@ -64,6 +71,8 @@ public class UserDetail {
     public Date getCreatedAt() {
         return createdAt;
     }
-
+    public UserAuth getUserAuth() {
+        return userAuth;
+    }
 
 }

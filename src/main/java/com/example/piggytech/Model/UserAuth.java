@@ -12,6 +12,7 @@ import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
+import jakarta.validation.constraints.NotEmpty;
 
 @Entity
 @Table(uniqueConstraints = {
@@ -22,8 +23,12 @@ public class UserAuth {
 
     private @Id
     @GeneratedValue Long id;
+
+    @NotEmpty(message = "Username is required")
     private String username;
+    @NotEmpty(message = "Email is required")
     private String email;
+    @NotEmpty(message = "Password is required")
     private String password;
 
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
@@ -31,16 +36,17 @@ public class UserAuth {
         joinColumns = @JoinColumn(name = "used_id", referencedColumnName = "id"),
         inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id")
     )
-
     private Set<Role> roles;   
    
     UserAuth(){}
 
-    public UserAuth(String username, String email, String password) {
-        this.username = username;
-        this.email = email;
-        this.password = password;
-       
+    public UserAuth(
+        @NotEmpty(message = "Username is required")String username,
+        @NotEmpty(message = "Email is required")String email,
+        @NotEmpty(message = "Password is required")String password) {
+            this.username = username;
+            this.email = email;
+            this.password = password;
     }
 
     // Setters

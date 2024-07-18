@@ -8,8 +8,8 @@ import com.example.piggytech.Model.UserAuth;
 
 
 public interface UserAuthRepository extends JpaRepository<UserAuth, Long> {
-    Optional<UserAuth> findByEmail(String email);
-    Optional<UserAuth> findByUsername(String username);
+    UserAuth findByEmail(String email);
+    UserAuth findByUsername(String username);
     Optional<UserAuth> findByUsernameOrEmail(String email, String username);
 
     Boolean existsByEmail(String email);
