@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 17, 2024 at 09:34 AM
+-- Generation Time: Jul 18, 2024 at 09:56 AM
 -- Server version: 10.4.27-MariaDB
 -- PHP Version: 8.2.0
 
@@ -154,6 +154,24 @@ INSERT INTO `sales_seq` (`next_val`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `userauth_userdetail`
+--
+
+CREATE TABLE `userauth_userdetail` (
+  `user_auth_id` bigint(20) DEFAULT NULL,
+  `user_detail_id` bigint(20) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `userauth_userdetail`
+--
+
+INSERT INTO `userauth_userdetail` (`user_auth_id`, `user_detail_id`) VALUES
+(1, 1);
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `user_auth`
 --
 
@@ -196,21 +214,19 @@ INSERT INTO `user_auth_seq` (`next_val`) VALUES
 --
 
 CREATE TABLE `user_detail` (
-  `id` bigint(20) NOT NULL,
+  `user_detail_id` bigint(20) NOT NULL,
   `address` varchar(255) DEFAULT NULL,
   `created_at` datetime(6) DEFAULT NULL,
   `phone` varchar(255) DEFAULT NULL,
-  `photo` varchar(255) DEFAULT NULL,
-  `user_auth_id` bigint(20) DEFAULT NULL
+  `photo` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `user_detail`
 --
 
-INSERT INTO `user_detail` (`id`, `address`, `created_at`, `phone`, `photo`, `user_auth_id`) VALUES
-(1, 'Bb', '2024-07-15 08:00:00.000000', '09', 'assets/images', 1),
-(2, 'Bb', '2024-07-15 08:00:00.000000', '09', 'assets/images', 2);
+INSERT INTO `user_detail` (`user_detail_id`, `address`, `created_at`, `phone`, `photo`) VALUES
+(1, 'Balayan', '2024-07-28 08:00:00.000000', '0999', '2');
 
 -- --------------------------------------------------------
 
@@ -227,7 +243,7 @@ CREATE TABLE `user_detail_seq` (
 --
 
 INSERT INTO `user_detail_seq` (`next_val`) VALUES
-(101);
+(51);
 
 -- --------------------------------------------------------
 
@@ -277,6 +293,13 @@ ALTER TABLE `sales`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `userauth_userdetail`
+--
+ALTER TABLE `userauth_userdetail`
+  ADD PRIMARY KEY (`user_detail_id`),
+  ADD UNIQUE KEY `UKiwmgvjt76epi7vu14r8rje5qv` (`user_auth_id`);
+
+--
 -- Indexes for table `user_auth`
 --
 ALTER TABLE `user_auth`
@@ -288,7 +311,7 @@ ALTER TABLE `user_auth`
 -- Indexes for table `user_detail`
 --
 ALTER TABLE `user_detail`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`user_detail_id`);
 
 --
 -- Indexes for table `user_role`
@@ -310,6 +333,13 @@ ALTER TABLE `role`
 --
 -- Constraints for dumped tables
 --
+
+--
+-- Constraints for table `userauth_userdetail`
+--
+ALTER TABLE `userauth_userdetail`
+  ADD CONSTRAINT `FK2w9echhi8fc2f7vxcrjd6oh1s` FOREIGN KEY (`user_detail_id`) REFERENCES `user_detail` (`user_detail_id`),
+  ADD CONSTRAINT `FKid68mfvcxg4lxjbua77p66ixb` FOREIGN KEY (`user_auth_id`) REFERENCES `user_auth` (`id`);
 
 --
 -- Constraints for table `user_role`
