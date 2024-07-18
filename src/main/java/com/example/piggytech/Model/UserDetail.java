@@ -39,7 +39,7 @@ public class UserDetail {
     }
 
     //setters
-     public void setAddress(String address) {
+    public void setAddress(String address) {
         this.address = address;
     }
     public void setPhone(String phone) {

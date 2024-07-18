@@ -2,33 +2,41 @@ package com.example.piggytech.Model;
 
 import java.util.Date;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
+import jakarta.persistence.Table;
 
 @Entity
+@Table(name = "inventory")
 public class Inventory {
 
     private @Id
     @GeneratedValue Long id;
-    private Long productId;
     private Date receivedDate;
     private Date expirationDate;
     private int quantity;
 
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(name = "product_inventory",
+        joinColumns = { @JoinColumn(name = "inventory_id", referencedColumnName = "id") },
+        inverseJoinColumns = { @JoinColumn(name = "product_id", referencedColumnName = "id") }
+    )
+    private Product product;
+
     Inventory(){}
 
-    public Inventory(Long productId, Date receivedDate, Date expirationDate, int quantity) {
-        this.productId = productId;
+    public Inventory(Date receivedDate, Date expirationDate, int quantity) {
         this.receivedDate = receivedDate;
         this.expirationDate = expirationDate;
         this.quantity = quantity;
     }
 
     // Setters
-    public void setProductId(Long productId) {
-        this.productId = productId;
-    }
     public void setReceivedDate(Date receivedDate) {
         this.receivedDate = receivedDate;
     }
@@ -38,13 +46,13 @@ public class Inventory {
     public void setQuantity(int quantity) {
         this.quantity= quantity;
     }
-
-     // Getters
-    public Long getId() {
-        return id;
+    public void setProduct(Product product) {
+        this.product = product;
     }
-    public Long getproductId() {
-        return productId;
+
+    // Getters
+    public Long getyId() {
+        return id;
     }
     public Date getReceivedDate() {
         return receivedDate;
@@ -55,8 +63,7 @@ public class Inventory {
     public int getQuantity() {
         return quantity;
     }
-   
+    public Product getProduct() {
+        return product;
+    }
 }
-   
-
-   

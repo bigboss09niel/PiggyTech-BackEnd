@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.piggytech.Model.Product;
@@ -29,7 +30,10 @@ public class ProductController {
 
     //GET ALL PRODUCT
     @GetMapping("/all")
-    public List<Product> getProduct() {
+    public List<Product> getProduct(@RequestParam(required = false) String search) {
+        if (search != null && !search.isEmpty()) {
+            return repo.findByProductNameContainingIgnoreCase(search);
+        }
         return repo.findAll();
     }
     

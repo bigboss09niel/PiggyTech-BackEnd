@@ -3,8 +3,10 @@ package com.example.piggytech.Model;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 
 @Entity
+@Table(name = "product")
 public class Product {
 
     private @Id
@@ -23,7 +25,6 @@ public class Product {
         this.stock = stock;
         this.sold = sold;
         this.photo = photo;
-       
     }
 
     // Setters
@@ -45,10 +46,10 @@ public class Product {
 
 
      // Getters
-     public Long getId() {
+    public Long getId() {
         return id;
-     }
-     public String getProductName() {
+    }
+    public String getProductName() {
         return productName;
     }
     public Double getPrice() {
@@ -65,6 +66,3 @@ public class Product {
     }
 
 }
-   
-
-   

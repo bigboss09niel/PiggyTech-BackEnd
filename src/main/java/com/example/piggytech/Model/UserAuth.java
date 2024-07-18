@@ -15,7 +15,7 @@ import jakarta.persistence.UniqueConstraint;
 import jakarta.validation.constraints.NotEmpty;
 
 @Entity
-@Table(uniqueConstraints = {
+@Table(name = "user_auth", uniqueConstraints = {
     @UniqueConstraint(columnNames = {"username"}),
     @UniqueConstraint(columnNames = {"email"}),
 })
