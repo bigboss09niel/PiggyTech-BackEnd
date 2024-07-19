@@ -2,6 +2,9 @@ package com.example.piggytech.Model;
 
 import java.util.Date;
 
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.SourceType;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -20,6 +23,7 @@ public class UserDetail {
     private String address;
     private String phone;
     private String photo;
+    @CreationTimestamp
     private Date createdAt;
 
     @OneToOne(cascade = CascadeType.ALL)
@@ -39,7 +43,7 @@ public class UserDetail {
     }
 
     //setters
-     public void setAddress(String address) {
+    public void setAddress(String address) {
         this.address = address;
     }
     public void setPhone(String phone) {

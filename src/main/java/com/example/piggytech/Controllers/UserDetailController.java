@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.piggytech.DTO.UserDetailDTO;
-import com.example.piggytech.Model.Inventory;
 import com.example.piggytech.Model.UserAuth;
 import com.example.piggytech.Model.UserDetail;
 import com.example.piggytech.NotFoundException.UserDetailNotFoundException;
@@ -31,16 +30,14 @@ public class UserDetailController {
     @Autowired
     UserAuthRepository userAuthRepository;
 
-    UserDetailRepository repo;
-
-    public UserDetailController(UserDetailRepository repo) {
-        this.repo = repo;
+    public UserDetailController(UserDetailRepository userDetailRepository) {
+        this.userDetailRepository = userDetailRepository;
     }
 
     //GET ALL USERDETAIL
     @GetMapping("/all")
     public List<UserDetail> getUserDetail() {
-        return repo.findAll();
+        return userDetailRepository.findAll();
     }
     
     // GET One userdetail

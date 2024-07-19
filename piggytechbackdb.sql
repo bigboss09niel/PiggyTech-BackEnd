@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 18, 2024 at 09:56 AM
+-- Generation Time: Jul 19, 2024 at 09:36 AM
 -- Server version: 10.4.27-MariaDB
 -- PHP Version: 8.2.0
 
@@ -42,7 +42,9 @@ CREATE TABLE `inventory` (
 INSERT INTO `inventory` (`id`, `expiration_date`, `product_id`, `quantity`, `received_date`) VALUES
 (1, '2025-07-15 08:00:00.000000', 1, 15, '2024-07-15 08:00:00.000000'),
 (2, '2025-07-16 08:00:00.000000', 2, 10, '2024-07-16 08:00:00.000000'),
-(3, '2025-07-17 08:00:00.000000', 3, 25, '2024-07-17 08:00:00.000000');
+(3, '2025-07-17 08:00:00.000000', 3, 25, '2024-07-17 08:00:00.000000'),
+(52, '2024-07-20 08:00:00.000000', NULL, 2, '2024-07-19 08:00:00.000000'),
+(53, '2024-07-20 08:00:00.000000', NULL, 2, '2024-07-19 08:00:00.000000');
 
 -- --------------------------------------------------------
 
@@ -59,7 +61,7 @@ CREATE TABLE `inventory_seq` (
 --
 
 INSERT INTO `inventory_seq` (`next_val`) VALUES
-(101);
+(151);
 
 -- --------------------------------------------------------
 
@@ -81,9 +83,28 @@ CREATE TABLE `product` (
 --
 
 INSERT INTO `product` (`id`, `price`, `product_name`, `sold`, `stock`, `photo`) VALUES
-(1, 1250, 'Mega', 14, 25, 'https://cdn.vectorstock.com/i/1000v/09/60/piggy-vector-2900960.jpg'),
+(1, 1250, 'Mega', 14, 29, 'https://cdn.vectorstock.com/i/1000v/09/60/piggy-vector-2900960.jpg'),
 (2, 1400, 'Cj Supreme Pre', 14, 25, 'https://cdn.vectorstock.com/i/1000v/09/60/piggy-vector-2900960.jpg'),
 (3, 1350, 'Muscle Max', 14, 25, 'https://cdn.vectorstock.com/i/1000v/09/60/piggy-vector-2900960.jpg');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `product_inventory`
+--
+
+CREATE TABLE `product_inventory` (
+  `inventory_id` bigint(20) NOT NULL,
+  `product_id` bigint(20) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `product_inventory`
+--
+
+INSERT INTO `product_inventory` (`inventory_id`, `product_id`) VALUES
+(52, 1),
+(53, 1);
 
 -- --------------------------------------------------------
 
@@ -167,7 +188,8 @@ CREATE TABLE `userauth_userdetail` (
 --
 
 INSERT INTO `userauth_userdetail` (`user_auth_id`, `user_detail_id`) VALUES
-(1, 1);
+(1, 1),
+(2, 2);
 
 -- --------------------------------------------------------
 
@@ -226,7 +248,8 @@ CREATE TABLE `user_detail` (
 --
 
 INSERT INTO `user_detail` (`user_detail_id`, `address`, `created_at`, `phone`, `photo`) VALUES
-(1, 'Balayan', '2024-07-28 08:00:00.000000', '0999', '2');
+(1, 'Balayan', '2024-07-28 08:00:00.000000', '0999', '2'),
+(2, 'Calaca, city', '2024-07-19 13:40:31.562566', '0987', '1');
 
 -- --------------------------------------------------------
 
@@ -243,7 +266,7 @@ CREATE TABLE `user_detail_seq` (
 --
 
 INSERT INTO `user_detail_seq` (`next_val`) VALUES
-(51);
+(101);
 
 -- --------------------------------------------------------
 
@@ -279,6 +302,13 @@ ALTER TABLE `inventory`
 --
 ALTER TABLE `product`
   ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `product_inventory`
+--
+ALTER TABLE `product_inventory`
+  ADD PRIMARY KEY (`inventory_id`,`product_id`),
+  ADD KEY `FK8echmjvoete36r6q97dr6pl7j` (`product_id`);
 
 --
 -- Indexes for table `role`
@@ -333,6 +363,13 @@ ALTER TABLE `role`
 --
 -- Constraints for dumped tables
 --
+
+--
+-- Constraints for table `product_inventory`
+--
+ALTER TABLE `product_inventory`
+  ADD CONSTRAINT `FK8echmjvoete36r6q97dr6pl7j` FOREIGN KEY (`product_id`) REFERENCES `product` (`id`),
+  ADD CONSTRAINT `FKrp29y97hpxviprydwuh5ndrc8` FOREIGN KEY (`inventory_id`) REFERENCES `inventory` (`id`);
 
 --
 -- Constraints for table `userauth_userdetail`
