@@ -1,5 +1,6 @@
 package com.example.piggytech.Controllers;
 
+import java.util.Collections;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,16 +52,28 @@ public class InventoryController {
     // CREATE ENDPOINTS
     @PostMapping("/new")
     public ResponseEntity<?> addInventoryEntity(@RequestBody InventoryDTO entity){
+        // Find the product by its name
+        Product product = productRepository.findByProductName(entity.getProductName());
+        if (product == null) {
+            return new ResponseEntity<>("Product not found", HttpStatus.NOT_FOUND);
+        }
+
+        // Update the product's stock
+        product.setStock(product.getStock() + entity.getQuantity());    
+        productRepository.save(product);
+
+        // Create the new inventory entry
         Inventory inventory = new Inventory(
             entity.getReceivedDate(),
             entity.getExpirationDate(),
             entity.getQuantity()
         );
-        Product product = productRepository.findByProductName(entity.getProductName());
-        inventory.setProduct(product);
+        inventory.setProduct(Collections.singleton(product));
         inventoryRepository.save(inventory);
+
         return new ResponseEntity<>("A new inventory is added. Yey!", HttpStatus.OK);
     }
+
 
     // UPDATE ENDPOINTS
     @PutMapping("/edit/{id}")
@@ -77,7 +90,7 @@ public class InventoryController {
             inventory.setReceivedDate(newInventory.getReceivedDate());
             inventory.setExpirationDate(newInventory.getExpirationDate());
             inventory.setQuantity(newInventory.getQuantity());
-            inventory.setProduct(product);
+            inventory.setProduct(Collections.singleton(product));
             return inventoryRepository.save(inventory);
         }).orElseGet(()->{
             return inventoryRepository.save(newInventory);

@@ -1,6 +1,7 @@
 package com.example.piggytech.Model;
 
 import java.util.Date;
+import java.util.Set;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
@@ -26,7 +27,7 @@ public class Inventory {
         joinColumns = { @JoinColumn(name = "inventory_id", referencedColumnName = "id") },
         inverseJoinColumns = { @JoinColumn(name = "product_id", referencedColumnName = "id") }
     )
-    private Product product;
+    private Set<Product> product;
 
     Inventory(){}
 
@@ -46,7 +47,7 @@ public class Inventory {
     public void setQuantity(int quantity) {
         this.quantity= quantity;
     }
-    public void setProduct(Product product) {
+    public void setProduct(Set<Product> product) {
         this.product = product;
     }
 
@@ -63,7 +64,8 @@ public class Inventory {
     public int getQuantity() {
         return quantity;
     }
-    public Product getProduct() {
+    public Set<Product> getProduct() {
         return product;
     }
+
 }
