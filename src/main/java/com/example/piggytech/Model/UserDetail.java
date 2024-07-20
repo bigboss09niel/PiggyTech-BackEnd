@@ -3,7 +3,6 @@ package com.example.piggytech.Model;
 import java.util.Date;
 
 import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.SourceType;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
@@ -26,6 +25,7 @@ public class UserDetail {
     @CreationTimestamp
     private Date createdAt;
 
+    // Defining the many-to-many relationship with User
     @OneToOne(cascade = CascadeType.ALL)
     @JoinTable(name = "userauth_userdetail",
         joinColumns = { @JoinColumn(name = "user_detail_id", referencedColumnName = "userDetailId") },
@@ -35,6 +35,7 @@ public class UserDetail {
 
     UserDetail(){}
 
+    // Constructors
     public UserDetail(String address, String phone, String photo, Date createdAt) {
         this.address = address;
         this.phone = phone;
@@ -42,7 +43,7 @@ public class UserDetail {
         this.createdAt = createdAt;
     }
 
-    //setters
+    // Setters
     public void setAddress(String address) {
         this.address = address;
     }
@@ -59,7 +60,7 @@ public class UserDetail {
         this.userAuth = userAuth;
     }
 
-    //getters
+    // Getters
     public Long getIdDetailId() {
         return userDetailId;
     }

@@ -12,6 +12,7 @@ public class UserDetailDTO {
 
     UserDetailDTO(){}
 
+    // Constructors
     public UserDetailDTO(String email, String address, String phone, String photo, Date createdAt) {
         this.email = email;
         this.address = address;

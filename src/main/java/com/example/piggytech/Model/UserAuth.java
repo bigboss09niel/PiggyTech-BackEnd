@@ -31,15 +31,17 @@ public class UserAuth {
     @NotEmpty(message = "Password is required")
     private String password;
 
+    // Defining the many-to-many relationship with Role
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinTable(name = "user_role",
         joinColumns = @JoinColumn(name = "used_id", referencedColumnName = "id"),
         inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id")
     )
-    private Set<Role> roles;   
-   
+    private Set<Role> roles;
+
     UserAuth(){}
 
+    // Constructors
     public UserAuth(
         @NotEmpty(message = "Username is required")String username,
         @NotEmpty(message = "Email is required")String email,
@@ -82,4 +84,5 @@ public class UserAuth {
     public Set<Role> getRoles() {
         return roles;
     }
+
 }

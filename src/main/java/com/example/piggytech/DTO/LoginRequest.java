@@ -6,22 +6,21 @@ public class LoginRequest {
 
     LoginRequest() {}
 
-    //constructors
+    // Constructors
     public LoginRequest(String usernameOrEmail, String password){
         this.usernameOrEmail = usernameOrEmail;
         this.password = password;
     }
 
-    //Setters
+    // Setters
     public void setUsernameOrEmail(String usernameOrEmail) {
         this.usernameOrEmail = usernameOrEmail;
     }
-
     public void setPassword(String password) {
         this.password = password;
     }
 
-    //Getters
+    // Getters
     public String getUsernameOrEmail() {
         return usernameOrEmail;
     }

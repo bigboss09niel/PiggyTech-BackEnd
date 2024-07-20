@@ -15,7 +15,7 @@ import com.example.piggytech.Repository.UserAuthRepository;
 
 @Service
 public class CustomUserDetailService implements UserDetailsService{
-    
+
     private UserAuthRepository userAuthRepository;
 
     public CustomUserDetailService(UserAuthRepository userAuthRepository){
@@ -32,7 +32,6 @@ public class CustomUserDetailService implements UserDetailsService{
             .stream()
             .map((role) -> new SimpleGrantedAuthority(role.getName())).collect(Collectors.toSet()
         );
-                 
         return new org.springframework.security.core.userdetails.User(
             userAuth.getEmail(),
             userAuth.getPassword(),

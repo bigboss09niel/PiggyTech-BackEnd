@@ -11,6 +11,7 @@ public class InventoryDTO {
 
     InventoryDTO(){}
 
+    // Constructors
     public InventoryDTO(String productName, Date receivedDate, Date expirationDate, int quantity) {
         this.productName = productName;
         this.receivedDate = receivedDate;

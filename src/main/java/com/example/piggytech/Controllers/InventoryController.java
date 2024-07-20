@@ -59,7 +59,7 @@ public class InventoryController {
         }
 
         // Update the product's stock
-        product.setStock(product.getStock() + entity.getQuantity());    
+        product.setStock(product.getStock() + entity.getQuantity());
         productRepository.save(product);
 
         // Create the new inventory entry
@@ -103,4 +103,5 @@ public class InventoryController {
         inventoryRepository.deleteById(id);
         return "A inventory is deleted!";
     }
+
 }

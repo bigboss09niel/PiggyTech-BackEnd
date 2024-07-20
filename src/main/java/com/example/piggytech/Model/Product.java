@@ -19,6 +19,7 @@ public class Product {
 
     Product(){}
 
+    // Constructors
     public Product(String productName, Double price ,Long stock, Long sold, String photo) {
         this.productName = productName;
         this.price = price;
@@ -43,7 +44,6 @@ public class Product {
     public void setPhoto(String photo) {
         this.photo = photo;
     }
-
 
      // Getters
     public Long getId() {
