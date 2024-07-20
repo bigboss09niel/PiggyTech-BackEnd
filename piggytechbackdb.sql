@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 19, 2024 at 09:36 AM
--- Server version: 10.4.27-MariaDB
--- PHP Version: 8.2.0
+-- Generation Time: Jul 20, 2024 at 06:49 PM
+-- Server version: 10.4.25-MariaDB
+-- PHP Version: 8.1.10
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -30,21 +30,20 @@ SET time_zone = "+00:00";
 CREATE TABLE `inventory` (
   `id` bigint(20) NOT NULL,
   `expiration_date` datetime(6) DEFAULT NULL,
-  `product_id` bigint(20) DEFAULT NULL,
   `quantity` int(11) NOT NULL,
   `received_date` datetime(6) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `inventory`
 --
 
-INSERT INTO `inventory` (`id`, `expiration_date`, `product_id`, `quantity`, `received_date`) VALUES
-(1, '2025-07-15 08:00:00.000000', 1, 15, '2024-07-15 08:00:00.000000'),
-(2, '2025-07-16 08:00:00.000000', 2, 10, '2024-07-16 08:00:00.000000'),
-(3, '2025-07-17 08:00:00.000000', 3, 25, '2024-07-17 08:00:00.000000'),
-(52, '2024-07-20 08:00:00.000000', NULL, 2, '2024-07-19 08:00:00.000000'),
-(53, '2024-07-20 08:00:00.000000', NULL, 2, '2024-07-19 08:00:00.000000');
+INSERT INTO `inventory` (`id`, `expiration_date`, `quantity`, `received_date`) VALUES
+(1, '2025-07-15 08:00:00.000000', 15, '2024-07-15 08:00:00.000000'),
+(2, '2025-07-16 08:00:00.000000', 10, '2024-07-16 08:00:00.000000'),
+(3, '2025-07-17 08:00:00.000000', 25, '2024-07-17 08:00:00.000000'),
+(52, '2024-07-20 08:00:00.000000', 2, '2024-07-19 08:00:00.000000'),
+(53, '2024-07-20 08:00:00.000000', 2, '2024-07-19 08:00:00.000000');
 
 -- --------------------------------------------------------
 
@@ -54,7 +53,7 @@ INSERT INTO `inventory` (`id`, `expiration_date`, `product_id`, `quantity`, `rec
 
 CREATE TABLE `inventory_seq` (
   `next_val` bigint(20) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `inventory_seq`
@@ -76,14 +75,14 @@ CREATE TABLE `product` (
   `sold` bigint(20) DEFAULT NULL,
   `stock` bigint(20) DEFAULT NULL,
   `photo` varchar(255) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `product`
 --
 
 INSERT INTO `product` (`id`, `price`, `product_name`, `sold`, `stock`, `photo`) VALUES
-(1, 1250, 'Mega', 14, 29, 'https://cdn.vectorstock.com/i/1000v/09/60/piggy-vector-2900960.jpg'),
+(1, 1250, 'Mega', 15, 28, 'https://cdn.vectorstock.com/i/1000v/09/60/piggy-vector-2900960.jpg'),
 (2, 1400, 'Cj Supreme Pre', 14, 25, 'https://cdn.vectorstock.com/i/1000v/09/60/piggy-vector-2900960.jpg'),
 (3, 1350, 'Muscle Max', 14, 25, 'https://cdn.vectorstock.com/i/1000v/09/60/piggy-vector-2900960.jpg');
 
@@ -96,7 +95,7 @@ INSERT INTO `product` (`id`, `price`, `product_name`, `sold`, `stock`, `photo`) 
 CREATE TABLE `product_inventory` (
   `inventory_id` bigint(20) NOT NULL,
   `product_id` bigint(20) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `product_inventory`
@@ -109,12 +108,30 @@ INSERT INTO `product_inventory` (`inventory_id`, `product_id`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `product_sales`
+--
+
+CREATE TABLE `product_sales` (
+  `sales_id` bigint(20) NOT NULL,
+  `product_id` bigint(20) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `product_sales`
+--
+
+INSERT INTO `product_sales` (`sales_id`, `product_id`) VALUES
+(1, 1);
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `product_seq`
 --
 
 CREATE TABLE `product_seq` (
   `next_val` bigint(20) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `product_seq`
@@ -132,7 +149,7 @@ INSERT INTO `product_seq` (`next_val`) VALUES
 CREATE TABLE `role` (
   `id` bigint(20) NOT NULL,
   `name` varchar(255) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `role`
@@ -151,9 +168,15 @@ INSERT INTO `role` (`id`, `name`) VALUES
 CREATE TABLE `sales` (
   `id` bigint(20) NOT NULL,
   `date` datetime(6) DEFAULT NULL,
-  `product_id` bigint(20) DEFAULT NULL,
   `quantity` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `sales`
+--
+
+INSERT INTO `sales` (`id`, `date`, `quantity`) VALUES
+(1, '2024-07-21 00:41:13.000000', 1);
 
 -- --------------------------------------------------------
 
@@ -163,14 +186,14 @@ CREATE TABLE `sales` (
 
 CREATE TABLE `sales_seq` (
   `next_val` bigint(20) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `sales_seq`
 --
 
 INSERT INTO `sales_seq` (`next_val`) VALUES
-(1);
+(51);
 
 -- --------------------------------------------------------
 
@@ -181,7 +204,7 @@ INSERT INTO `sales_seq` (`next_val`) VALUES
 CREATE TABLE `userauth_userdetail` (
   `user_auth_id` bigint(20) DEFAULT NULL,
   `user_detail_id` bigint(20) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `userauth_userdetail`
@@ -202,7 +225,7 @@ CREATE TABLE `user_auth` (
   `email` varchar(255) DEFAULT NULL,
   `password` varchar(255) DEFAULT NULL,
   `username` varchar(255) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `user_auth`
@@ -220,7 +243,7 @@ INSERT INTO `user_auth` (`id`, `email`, `password`, `username`) VALUES
 
 CREATE TABLE `user_auth_seq` (
   `next_val` bigint(20) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `user_auth_seq`
@@ -241,7 +264,7 @@ CREATE TABLE `user_detail` (
   `created_at` datetime(6) DEFAULT NULL,
   `phone` varchar(255) DEFAULT NULL,
   `photo` varchar(255) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `user_detail`
@@ -259,7 +282,7 @@ INSERT INTO `user_detail` (`user_detail_id`, `address`, `created_at`, `phone`, `
 
 CREATE TABLE `user_detail_seq` (
   `next_val` bigint(20) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `user_detail_seq`
@@ -277,7 +300,7 @@ INSERT INTO `user_detail_seq` (`next_val`) VALUES
 CREATE TABLE `user_role` (
   `used_id` bigint(20) NOT NULL,
   `role_id` bigint(20) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `user_role`
@@ -309,6 +332,13 @@ ALTER TABLE `product`
 ALTER TABLE `product_inventory`
   ADD PRIMARY KEY (`inventory_id`,`product_id`),
   ADD KEY `FK8echmjvoete36r6q97dr6pl7j` (`product_id`);
+
+--
+-- Indexes for table `product_sales`
+--
+ALTER TABLE `product_sales`
+  ADD PRIMARY KEY (`sales_id`,`product_id`),
+  ADD KEY `FKj07d1ftmysihmrry8f4isdu7f` (`product_id`);
 
 --
 -- Indexes for table `role`
@@ -370,6 +400,13 @@ ALTER TABLE `role`
 ALTER TABLE `product_inventory`
   ADD CONSTRAINT `FK8echmjvoete36r6q97dr6pl7j` FOREIGN KEY (`product_id`) REFERENCES `product` (`id`),
   ADD CONSTRAINT `FKrp29y97hpxviprydwuh5ndrc8` FOREIGN KEY (`inventory_id`) REFERENCES `inventory` (`id`);
+
+--
+-- Constraints for table `product_sales`
+--
+ALTER TABLE `product_sales`
+  ADD CONSTRAINT `FKj07d1ftmysihmrry8f4isdu7f` FOREIGN KEY (`product_id`) REFERENCES `product` (`id`),
+  ADD CONSTRAINT `FKoq6p67l5149l05d3m1ul0qfsa` FOREIGN KEY (`sales_id`) REFERENCES `sales` (`id`);
 
 --
 -- Constraints for table `userauth_userdetail`
