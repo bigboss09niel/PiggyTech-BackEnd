@@ -22,6 +22,7 @@ public class Inventory {
     private Date expirationDate;
     private int quantity;
 
+    // Defining the many-to-many relationship with Product
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(name = "product_inventory",
         joinColumns = { @JoinColumn(name = "inventory_id", referencedColumnName = "id") },
@@ -31,6 +32,7 @@ public class Inventory {
 
     Inventory(){}
 
+    // Constructors
     public Inventory(Date receivedDate, Date expirationDate, int quantity) {
         this.receivedDate = receivedDate;
         this.expirationDate = expirationDate;

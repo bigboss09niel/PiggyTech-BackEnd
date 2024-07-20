@@ -16,7 +16,6 @@ import com.example.piggytech.Model.Product;
 import com.example.piggytech.NotFoundException.ProductNotFoundException;
 import com.example.piggytech.Repository.ProductRepository;
 
-
 @RestController
 @RequestMapping("/api/v1/product")
 public class ProductController {
@@ -26,7 +25,6 @@ public class ProductController {
     public ProductController(ProductRepository repo) {
         this.repo = repo;
     }
-
 
     //GET ALL PRODUCT
     @GetMapping("/all")
@@ -50,6 +48,7 @@ public class ProductController {
         repo.save(newProduct);
         return "A new product is added. Yey!";
     }
+
     //UPDATE ENDPOINTS
     @PutMapping("/edit/{id}")
     public Product updateProduct(@PathVariable Long id, 
@@ -73,4 +72,5 @@ public class ProductController {
         repo.deleteById(id);
         return "A product is deleted";
     }
+
 }

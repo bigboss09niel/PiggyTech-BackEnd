@@ -17,6 +17,7 @@ public class Role {
 
     Role(){}
 
+    // Constructors
     public  Role(String name){
         this.name = name;
     }

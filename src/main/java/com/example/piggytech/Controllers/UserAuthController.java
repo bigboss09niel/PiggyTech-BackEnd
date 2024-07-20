@@ -144,4 +144,5 @@ public class UserAuthController {
             return new ResponseEntity<>(Map.of("error", e.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
 }

@@ -15,4 +15,5 @@ public class SalesExceptionHandler {
     String salesNotFoundHandler(SalesNotFoundException e){
         return e.getMessage();
     }
+
 }

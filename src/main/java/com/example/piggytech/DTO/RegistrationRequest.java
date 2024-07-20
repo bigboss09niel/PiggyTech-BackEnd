@@ -9,15 +9,14 @@ public class RegistrationRequest {
 
     RegistrationRequest(){}
 
-
-    //constructors
+    // Constructors
     public RegistrationRequest(String username, String email, String password) {
         this.username = username;
         this.email = email;
         this.password = password;
     }
 
-    //setters
+    // Setters
     public void setUsername(String username) {
         this.username = username;
     }
@@ -28,7 +27,7 @@ public class RegistrationRequest {
         this.password = password;
     }
 
-    //getters
+    // Getters
     public String getUsername() {
         return username;
     }
@@ -40,8 +39,3 @@ public class RegistrationRequest {
     }
 
 }
-
-
-
-
-
