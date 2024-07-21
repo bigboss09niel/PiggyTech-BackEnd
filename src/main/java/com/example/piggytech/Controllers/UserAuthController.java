@@ -27,8 +27,10 @@ import com.example.piggytech.DTO.LoginRequest;
 import com.example.piggytech.DTO.RegistrationRequest;
 import com.example.piggytech.Model.Role;
 import com.example.piggytech.Model.UserAuth;
+import com.example.piggytech.Model.UserDetail;
 import com.example.piggytech.Repository.RoleRepository;
 import com.example.piggytech.Repository.UserAuthRepository;
+import com.example.piggytech.Repository.UserDetailRepository;
 
 @RestController
 @RequestMapping("/api/v1/auth")
@@ -41,14 +43,34 @@ public class UserAuthController {
     RoleRepository roleRepository;
 
     @Autowired
+    UserDetailRepository userDetailRepository;
+
+    @Autowired
     PasswordEncoder passwordEncoder;
 
     @Autowired
     AuthenticationManager authenticationManager;
 
     @GetMapping("/all")
-    public List<UserAuth> getUserAuths() {
-        return userAuthRepository.findAll();
+    public ResponseEntity<List<Map<String, Object>>> getAllUserDetails() {
+        List<UserDetail> userDetails = userDetailRepository.findAll();
+
+        List<Map<String, Object>> response = userDetails.stream().map(userDetail -> {
+            UserAuth userAuth = userDetail.getUserAuth();
+
+            Map<String, Object> userMap = new HashMap<>();
+            userMap.put("username", userAuth.getUsername());
+            userMap.put("email", userAuth.getEmail());
+            userMap.put("address", userDetail.getAddress());
+            userMap.put("phone", userDetail.getPhone());
+            userMap.put("photo", userDetail.getPhoto());
+            userMap.put("createdAt", userDetail.getCreatedAt());
+            userMap.put("roles", userAuth.getRoles().stream().map(role -> role.getName()).collect(Collectors.toSet()));
+
+            return userMap;
+        }).collect(Collectors.toList());
+
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @PostMapping("/register")
