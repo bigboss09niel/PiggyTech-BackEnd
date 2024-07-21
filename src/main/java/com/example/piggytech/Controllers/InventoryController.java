@@ -2,6 +2,7 @@ package com.example.piggytech.Controllers;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -38,8 +39,16 @@ public class InventoryController {
 
     // GET ALL INVENTORY
     @GetMapping("/all")
-    public List<Inventory> getInventory(){
-        return inventoryRepository.findAll();
+    public List<InventoryDTO> getInventory(){
+        List<Inventory> inventories = inventoryRepository.findAll();
+        return inventories.stream()
+            .map(inventory -> new InventoryDTO(
+                inventory.getProduct().iterator().next().getProductName(),
+                inventory.getReceivedDate(),
+                inventory.getExpirationDate(),
+                inventory.getQuantity()
+        ))
+        .collect(Collectors.toList());
     }
 
     // GET ONE INVENTORY
