@@ -45,6 +45,17 @@ public class ProductController {
     //CREATE ENDPOINTS
     @PostMapping("/new")
     public String addProduct(@RequestBody Product newProduct) {
+        // Ensure stock and sold default to 0 if not provided
+        if (newProduct.getStock() == null) {
+            newProduct.setStock(0L);
+        }
+        if (newProduct.getSold() == null) {
+            newProduct.setSold(0L);
+        }
+        // Optionally set a default photo URL if none is provided
+        if (newProduct.getPhoto() == null || newProduct.getPhoto().isEmpty()) {
+            newProduct.setPhoto("https://cdn.vectorstock.com/i/1000v/09/60/piggy-vector-2900960.jpg");
+        }
         repo.save(newProduct);
         return "A new product is added. Yey!";
     }

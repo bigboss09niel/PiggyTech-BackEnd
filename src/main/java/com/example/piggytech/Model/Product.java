@@ -13,9 +13,9 @@ public class Product {
     @GeneratedValue Long id;
     private String productName;
     private Double price;
-    private Long stock;
-    private Long sold;
-    private String photo;
+    private Long stock = 0L;
+    private Long sold = 0L;
+    private String photo = "https://cdn.vectorstock.com/i/1000v/09/60/piggy-vector-2900960.jpg";
 
     Product(){}
 
@@ -23,9 +23,9 @@ public class Product {
     public Product(String productName, Double price ,Long stock, Long sold, String photo) {
         this.productName = productName;
         this.price = price;
-        this.stock = stock;
-        this.sold = sold;
-        this.photo = photo;
+        this.stock = (stock != null) ? stock : 0L; // Default to 0 if null
+        this.sold = (sold != null) ? sold : 0L; // Default to 0 if null
+        this.photo = (photo != null && !photo.isEmpty()) ? photo : "https://cdn.vectorstock.com/i/1000v/09/60/piggy-vector-2900960.jpg";
     }
 
     // Setters
@@ -36,13 +36,13 @@ public class Product {
         this.price = price;
     }
     public void setStock(Long stock) {
-        this.stock = stock;
+        this.stock = stock != null ? stock : 0L;
     }
     public void setSold(Long sold) {
-        this.sold = sold;
+        this.sold = sold != null ? sold : 0L;
     }
     public void setPhoto(String photo) {
-        this.photo = photo;
+        this.photo = (photo != null && !photo.isEmpty()) ? photo : "https://cdn.vectorstock.com/i/1000v/09/60/piggy-vector-2900960.jpg";
     }
 
      // Getters
