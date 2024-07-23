@@ -7,17 +7,17 @@ public class UserDetailDTO {
     private String email;
     private String address;
     private String phone;
-    private String photo;
+    private String gender;
     private Date createdAt;
 
     UserDetailDTO(){}
 
     // Constructors
-    public UserDetailDTO(String email, String address, String phone, String photo, Date createdAt) {
+    public UserDetailDTO(String email, String address, String phone, String gender, Date createdAt) {
         this.email = email;
         this.address = address;
         this.phone = phone;
-        this.photo = photo;
+        this.gender = gender;
         this.createdAt = createdAt;
     }
 
@@ -31,8 +31,8 @@ public class UserDetailDTO {
     public void setPhone(String phone) {
         this.phone = phone;
     }
-    public void setPhoto(String photo) {
-        this.photo = photo;
+    public void setGender(String gender) {
+        this.gender = gender;
     }
     public void setCreatedAt(Date createdAt) {
         this.createdAt = createdAt;
@@ -48,8 +48,8 @@ public class UserDetailDTO {
     public String getPhone() {
         return phone;
     }
-    public String getPhoto() {
-        return photo;
+    public String getGender() {
+        return gender;
     }
     public Date getCreatedAt() {
         return createdAt;

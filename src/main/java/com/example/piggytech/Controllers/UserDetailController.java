@@ -53,7 +53,7 @@ public class UserDetailController {
         UserDetail userDetail = new UserDetail(
             entity.getAddress(),
             entity.getPhone(),
-            entity.getPhoto(),
+            entity.getGender(),
             entity.getCreatedAt()
         );
         UserAuth userAuth = userAuthRepository.findByEmail(entity.getEmail());
@@ -68,7 +68,7 @@ public class UserDetailController {
         UserDetail newUserDetail = new UserDetail(
             entity.getAddress(),
             entity.getPhone(),
-            entity.getPhoto(),
+            entity.getGender(),
             entity.getCreatedAt()
         );
         UserAuth userAuth = userAuthRepository.findByEmail(entity.getEmail());
@@ -76,7 +76,7 @@ public class UserDetailController {
         .map(userDetail ->{
             userDetail.setAddress(newUserDetail.getAddress());
             userDetail.setPhone(newUserDetail.getPhone());
-            userDetail.setPhoto(newUserDetail.getPhoto());
+            userDetail.setGender(newUserDetail.getGender());
             userDetail.setCreatedAt(newUserDetail.getCreatedAt());
             userDetail.setUserAuth(userAuth);
             return userDetailRepository.save(userDetail);

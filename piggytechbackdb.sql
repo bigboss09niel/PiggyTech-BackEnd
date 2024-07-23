@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 20, 2024 at 06:49 PM
+-- Generation Time: Jul 23, 2024 at 08:23 AM
 -- Server version: 10.4.25-MariaDB
 -- PHP Version: 8.1.10
 
@@ -39,11 +39,8 @@ CREATE TABLE `inventory` (
 --
 
 INSERT INTO `inventory` (`id`, `expiration_date`, `quantity`, `received_date`) VALUES
-(1, '2025-07-15 08:00:00.000000', 15, '2024-07-15 08:00:00.000000'),
-(2, '2025-07-16 08:00:00.000000', 10, '2024-07-16 08:00:00.000000'),
-(3, '2025-07-17 08:00:00.000000', 25, '2024-07-17 08:00:00.000000'),
 (52, '2024-07-20 08:00:00.000000', 2, '2024-07-19 08:00:00.000000'),
-(53, '2024-07-20 08:00:00.000000', 2, '2024-07-19 08:00:00.000000');
+(53, '2024-07-21 08:00:00.000000', 2, '2024-07-20 12:00:00.000000');
 
 -- --------------------------------------------------------
 
@@ -84,7 +81,8 @@ CREATE TABLE `product` (
 INSERT INTO `product` (`id`, `price`, `product_name`, `sold`, `stock`, `photo`) VALUES
 (1, 1250, 'Mega', 15, 28, 'https://cdn.vectorstock.com/i/1000v/09/60/piggy-vector-2900960.jpg'),
 (2, 1400, 'Cj Supreme Pre', 14, 25, 'https://cdn.vectorstock.com/i/1000v/09/60/piggy-vector-2900960.jpg'),
-(3, 1350, 'Muscle Max', 14, 25, 'https://cdn.vectorstock.com/i/1000v/09/60/piggy-vector-2900960.jpg');
+(3, 1350, 'Muscle Max', 14, 25, 'https://cdn.vectorstock.com/i/1000v/09/60/piggy-vector-2900960.jpg'),
+(52, 1100, 'Express', 0, 0, 'https://cdn.vectorstock.com/i/1000v/09/60/piggy-vector-2900960.jpg');
 
 -- --------------------------------------------------------
 
@@ -103,7 +101,7 @@ CREATE TABLE `product_inventory` (
 
 INSERT INTO `product_inventory` (`inventory_id`, `product_id`) VALUES
 (52, 1),
-(53, 1);
+(53, 2);
 
 -- --------------------------------------------------------
 
@@ -138,7 +136,7 @@ CREATE TABLE `product_seq` (
 --
 
 INSERT INTO `product_seq` (`next_val`) VALUES
-(101);
+(151);
 
 -- --------------------------------------------------------
 
@@ -212,7 +210,9 @@ CREATE TABLE `userauth_userdetail` (
 
 INSERT INTO `userauth_userdetail` (`user_auth_id`, `user_detail_id`) VALUES
 (1, 1),
-(2, 2);
+(2, 2),
+(52, 52),
+(102, 53);
 
 -- --------------------------------------------------------
 
@@ -233,7 +233,9 @@ CREATE TABLE `user_auth` (
 
 INSERT INTO `user_auth` (`id`, `email`, `password`, `username`) VALUES
 (1, 'rm@gmail.com', '$2a$10$4qyxm6lfqwC8khhoxeEhCuxDr6SCbsbwc.TdSEbniN6OhW/h7j4GK', 'bossing'),
-(2, 'ro@gmail.com', '$2a$10$k.2PqcaZkpYEnZCtLakRP.vByUUu7fLli7W8TCECNCE.IXoSKbVPG', 'rinalyn');
+(2, 'ro@gmail.com', '$2a$10$k.2PqcaZkpYEnZCtLakRP.vByUUu7fLli7W8TCECNCE.IXoSKbVPG', 'rinalyn'),
+(52, 'vt@gmail.com', '$2a$10$2K5prfJSHsniprTOt/GLsuHEkLNhENeJwdWUYVFNzwSjjozqVjCXy', 'Vhenus'),
+(102, 'yv@gmail.com', '$2a$10$/wFWFOMkTb5EXoyBgzU7i.Q5.5M6JK19orWpB7hcXZo4Pe./hryr2', 'Yana');
 
 -- --------------------------------------------------------
 
@@ -250,7 +252,7 @@ CREATE TABLE `user_auth_seq` (
 --
 
 INSERT INTO `user_auth_seq` (`next_val`) VALUES
-(101);
+(201);
 
 -- --------------------------------------------------------
 
@@ -263,16 +265,18 @@ CREATE TABLE `user_detail` (
   `address` varchar(255) DEFAULT NULL,
   `created_at` datetime(6) DEFAULT NULL,
   `phone` varchar(255) DEFAULT NULL,
-  `photo` varchar(255) DEFAULT NULL
+  `gender` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `user_detail`
 --
 
-INSERT INTO `user_detail` (`user_detail_id`, `address`, `created_at`, `phone`, `photo`) VALUES
-(1, 'Balayan', '2024-07-28 08:00:00.000000', '0999', '2'),
-(2, 'Calaca, city', '2024-07-19 13:40:31.562566', '0987', '1');
+INSERT INTO `user_detail` (`user_detail_id`, `address`, `created_at`, `phone`, `gender`) VALUES
+(1, 'Balayan', '2024-07-22 08:00:00.000000', '09123456789', 'male'),
+(2, 'Calaca, city', '2024-07-19 13:40:31.562566', '09871234567', 'female'),
+(52, 'Calaca City, Batangas', '2024-07-23 04:24:48.000000', '01234567890', 'female'),
+(53, 'Calaca City', '2024-07-23 04:27:04.000000', '09876543210', 'female');
 
 -- --------------------------------------------------------
 
@@ -289,7 +293,7 @@ CREATE TABLE `user_detail_seq` (
 --
 
 INSERT INTO `user_detail_seq` (`next_val`) VALUES
-(101);
+(151);
 
 -- --------------------------------------------------------
 
@@ -308,7 +312,9 @@ CREATE TABLE `user_role` (
 
 INSERT INTO `user_role` (`used_id`, `role_id`) VALUES
 (1, 1),
-(2, 2);
+(2, 2),
+(52, 2),
+(102, 2);
 
 --
 -- Indexes for dumped tables

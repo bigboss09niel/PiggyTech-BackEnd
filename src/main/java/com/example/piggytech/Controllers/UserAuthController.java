@@ -63,7 +63,7 @@ public class UserAuthController {
             userMap.put("email", userAuth.getEmail());
             userMap.put("address", userDetail.getAddress());
             userMap.put("phone", userDetail.getPhone());
-            userMap.put("photo", userDetail.getPhoto());
+            userMap.put("gender", userDetail.getGender());
             userMap.put("createdAt", userDetail.getCreatedAt());
             userMap.put("roles", userAuth.getRoles().stream().map(role -> role.getName()).collect(Collectors.toSet()));
 
@@ -130,41 +130,51 @@ public class UserAuthController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<Map<String, Object>> login(@RequestBody LoginRequest loginRequest){
-        try {
-            Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(
-                    loginRequest.getUsernameOrEmail(),
-                    loginRequest.getPassword()
-                )
-            );
+public ResponseEntity<Map<String, Object>> login(@RequestBody LoginRequest loginRequest){
+    try {
+        Authentication authentication = authenticationManager.authenticate(
+            new UsernamePasswordAuthenticationToken(
+                loginRequest.getUsernameOrEmail(),
+                loginRequest.getPassword()
+            )
+        );
 
-            SecurityContextHolder.getContext().setAuthentication(authentication);
+        SecurityContextHolder.getContext().setAuthentication(authentication);
 
-            UserAuth userAuth = userAuthRepository.findByUsernameOrEmail(
-                loginRequest.getUsernameOrEmail(), 
-                loginRequest.getUsernameOrEmail()
-            ).orElseThrow(() -> 
-                new UsernameNotFoundException("User not found with username or email: " + loginRequest.getUsernameOrEmail())
-            );
+        UserAuth userAuth = userAuthRepository.findByUsernameOrEmail(
+            loginRequest.getUsernameOrEmail(), 
+            loginRequest.getUsernameOrEmail()
+        ).orElseThrow(() -> 
+            new UsernameNotFoundException("User not found with username or email: " + loginRequest.getUsernameOrEmail())
+        );
 
-            Set<String> roles = userAuth.getRoles()
-                .stream()
-                .map(role -> role.getName())
-                .collect(Collectors.toSet());
+        UserDetail userDetail = userDetailRepository.findById(userAuth.getId())
+            .orElseThrow(() -> new RuntimeException("User details not found for user ID: " + userAuth.getId()));
 
-            Map<String, Object> response = new HashMap<>();
-            response.put("message", "User logged in successfully");
-            response.put("roles", roles);
+        Set<String> roles = userAuth.getRoles()
+            .stream()
+            .map(role -> role.getName())
+            .collect(Collectors.toSet());
 
-            return new ResponseEntity<>(response, HttpStatus.OK);
-        } catch (BadCredentialsException e) {
-            return new ResponseEntity<>(Map.of("error", "Invalid username or password"), HttpStatus.UNAUTHORIZED);
-        } catch (UsernameNotFoundException e) {
-            return new ResponseEntity<>(Map.of("error", e.getMessage()), HttpStatus.UNAUTHORIZED);
-        } catch (Exception e) {
-            return new ResponseEntity<>(Map.of("error", e.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+        Map<String, Object> response = new HashMap<>();
+        response.put("message", "User logged in successfully");
+        response.put("username", userAuth.getUsername());
+        response.put("email", userAuth.getEmail());
+        response.put("address", userDetail.getAddress());
+        response.put("phone", userDetail.getPhone());
+        response.put("gender", userDetail.getGender());
+        response.put("createdAt", userDetail.getCreatedAt());
+        response.put("roles", roles);
+
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    } catch (BadCredentialsException e) {
+        return new ResponseEntity<>(Map.of("error", "Invalid username or password"), HttpStatus.UNAUTHORIZED);
+    } catch (UsernameNotFoundException e) {
+        return new ResponseEntity<>(Map.of("error", e.getMessage()), HttpStatus.UNAUTHORIZED);
+    } catch (Exception e) {
+        return new ResponseEntity<>(Map.of("error", e.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
     }
+}
+
 
 }
