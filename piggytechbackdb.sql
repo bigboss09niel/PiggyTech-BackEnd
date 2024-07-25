@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 23, 2024 at 08:23 AM
+-- Generation Time: Jul 25, 2024 at 11:20 PM
 -- Server version: 10.4.25-MariaDB
 -- PHP Version: 8.1.10
 
@@ -82,7 +82,8 @@ INSERT INTO `product` (`id`, `price`, `product_name`, `sold`, `stock`, `photo`) 
 (1, 1250, 'Mega', 15, 28, 'https://cdn.vectorstock.com/i/1000v/09/60/piggy-vector-2900960.jpg'),
 (2, 1400, 'Cj Supreme Pre', 14, 25, 'https://cdn.vectorstock.com/i/1000v/09/60/piggy-vector-2900960.jpg'),
 (3, 1350, 'Muscle Max', 14, 25, 'https://cdn.vectorstock.com/i/1000v/09/60/piggy-vector-2900960.jpg'),
-(52, 1100, 'Express', 0, 0, 'https://cdn.vectorstock.com/i/1000v/09/60/piggy-vector-2900960.jpg');
+(52, 1100, 'Express', 0, 0, 'https://cdn.vectorstock.com/i/1000v/09/60/piggy-vector-2900960.jpg'),
+(102, 1000, 'Oink', 0, 0, 'https://cdn.vectorstock.com/i/1000v/09/60/piggy-vector-2900960.jpg');
 
 -- --------------------------------------------------------
 
@@ -136,7 +137,7 @@ CREATE TABLE `product_seq` (
 --
 
 INSERT INTO `product_seq` (`next_val`) VALUES
-(151);
+(201);
 
 -- --------------------------------------------------------
 
@@ -212,7 +213,12 @@ INSERT INTO `userauth_userdetail` (`user_auth_id`, `user_detail_id`) VALUES
 (1, 1),
 (2, 2),
 (52, 52),
-(102, 53);
+(102, 53),
+(152, 102),
+(202, 152),
+(252, 202),
+(302, 252),
+(403, 302);
 
 -- --------------------------------------------------------
 
@@ -235,7 +241,12 @@ INSERT INTO `user_auth` (`id`, `email`, `password`, `username`) VALUES
 (1, 'rm@gmail.com', '$2a$10$4qyxm6lfqwC8khhoxeEhCuxDr6SCbsbwc.TdSEbniN6OhW/h7j4GK', 'bossing'),
 (2, 'ro@gmail.com', '$2a$10$k.2PqcaZkpYEnZCtLakRP.vByUUu7fLli7W8TCECNCE.IXoSKbVPG', 'rinalyn'),
 (52, 'vt@gmail.com', '$2a$10$2K5prfJSHsniprTOt/GLsuHEkLNhENeJwdWUYVFNzwSjjozqVjCXy', 'Vhenus'),
-(102, 'yv@gmail.com', '$2a$10$/wFWFOMkTb5EXoyBgzU7i.Q5.5M6JK19orWpB7hcXZo4Pe./hryr2', 'Yana');
+(102, 'yv@gmail.com', '$2a$10$/wFWFOMkTb5EXoyBgzU7i.Q5.5M6JK19orWpB7hcXZo4Pe./hryr2', 'Yana'),
+(152, 'rm09@gmail.com', '$2a$10$oS6/VyWk8p5e6KoAUL.KLu8nlBDGVDjHJOnppHtvQvWA1iVVOzmNm', 'roniel'),
+(202, 'bossing@gmail.com', '$2a$10$pi4i771KMJWCXeq9PdneMeeMFAM1.OePwEgY5az45dkZmzUA.qg/S', 'rm'),
+(252, 'hi@gmail.com', '$2a$10$724emhQ6ekFktTwZEN9N5uKwp0VTmn.2ANxwiElQKpjRDpuVZX5GW', 'hello'),
+(302, 'fa@gmail.com', '$2a$10$/4D0.rlLqNaWesonve/FvOow3WpxJTt1wYCoTbkTgOyCi9uLOlqh6', 'franze'),
+(403, 'hello@gmail.com', '$2a$10$qqMf58ztcr7qbmEUST42YOAdg05GrOUfganhjlI2p8NGfXOpE.8jy', 'hii');
 
 -- --------------------------------------------------------
 
@@ -252,7 +263,7 @@ CREATE TABLE `user_auth_seq` (
 --
 
 INSERT INTO `user_auth_seq` (`next_val`) VALUES
-(201);
+(501);
 
 -- --------------------------------------------------------
 
@@ -276,7 +287,12 @@ INSERT INTO `user_detail` (`user_detail_id`, `address`, `created_at`, `phone`, `
 (1, 'Balayan', '2024-07-22 08:00:00.000000', '09123456789', 'male'),
 (2, 'Calaca, city', '2024-07-19 13:40:31.562566', '09871234567', 'female'),
 (52, 'Calaca City, Batangas', '2024-07-23 04:24:48.000000', '01234567890', 'female'),
-(53, 'Calaca City', '2024-07-23 04:27:04.000000', '09876543210', 'female');
+(53, 'Calaca City', '2024-07-23 04:27:04.000000', '09876543210', 'female'),
+(102, 'balayan', '2024-07-26 00:50:49.000000', '65654654165', 'male'),
+(152, 'batngas', '2024-07-26 01:21:13.000000', '56464123156', 'male'),
+(202, '12345678', '2024-07-26 01:32:13.000000', '78945612307', 'male'),
+(252, 'BA', '2024-07-26 01:49:44.000000', '65416846484', 'male'),
+(302, 'ba', '2024-07-26 04:05:53.000000', '21231564687', 'male');
 
 -- --------------------------------------------------------
 
@@ -293,7 +309,7 @@ CREATE TABLE `user_detail_seq` (
 --
 
 INSERT INTO `user_detail_seq` (`next_val`) VALUES
-(151);
+(401);
 
 -- --------------------------------------------------------
 
@@ -314,7 +330,12 @@ INSERT INTO `user_role` (`used_id`, `role_id`) VALUES
 (1, 1),
 (2, 2),
 (52, 2),
-(102, 2);
+(102, 2),
+(152, 2),
+(202, 2),
+(252, 1),
+(302, 2),
+(403, 1);
 
 --
 -- Indexes for dumped tables
