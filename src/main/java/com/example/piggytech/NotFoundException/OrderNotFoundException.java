@@ -1,8 +1,8 @@
 package com.example.piggytech.NotFoundException;
 
-public class SalesNotFoundException extends RuntimeException {
+public class OrderNotFoundException extends RuntimeException {
 
-    public SalesNotFoundException(Long id){
+    public OrderNotFoundException(Long id){
         super("Could not found sales with " + id);
     }
 

@@ -14,9 +14,6 @@ import com.example.piggytech.Model.Cart;
 import com.example.piggytech.NotFoundException.CartNotFoundException;
 import com.example.piggytech.Repository.CartRepository;
 
-
-
-
 @RestController
 @RequestMapping("/api/v1/cart")
 public class CartController {
@@ -26,20 +23,18 @@ public class CartController {
     public CartController (CartRepository repo){
         this.repo = repo;
     }
-//http://127.0.0.1:8080/Cart
-    //getall Cart
+
     @GetMapping("/all")
     public List<Cart>getCart(){
         return repo.findAll();
     }
-    //http://127.0.0.1:8080/Cart/1
+
     @GetMapping("/{id}")
     public Cart  getCartById(@PathVariable Long id){
         return repo.findById(id)
         .orElseThrow (()-> new CartNotFoundException(id));
     }  
 
-    //http//:127.0.0.1:8080/Cart/new
     @PostMapping("/new")
     public String addCart(@RequestBody Cart newCart){
         repo.save(newCart);
@@ -47,8 +42,6 @@ public class CartController {
 
     }
 
-   //DELETE ENDPOINTS
-   //http://127.0.0.1:8080/Cart/delete/1
    @DeleteMapping ("/delete/{id}")
    public String deleteCart(@PathVariable Long id){
      repo.deleteById(id);
