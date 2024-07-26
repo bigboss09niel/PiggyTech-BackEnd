@@ -22,7 +22,7 @@ public class Sales {
     @GeneratedValue Long id;
     @CreationTimestamp
     private Date date;
-    private int quantity;
+    private Double totalPrice;
 
     // Defining the many-to-many relationship with Product
     @ManyToMany(cascade = CascadeType.ALL)
@@ -35,17 +35,17 @@ public class Sales {
     Sales(){}
 
     // Constructors
-    public Sales(Date date, int quantity) {
+    public Sales(Date date, Double totalPrice) {
         this.date = date;
-        this.quantity = quantity;
+        this.totalPrice = totalPrice;
     }
 
     // Setters
     public void setDate(Date date) {
         this.date =date;
     }
-    public void setQuantity(int quantity) {
-        this.quantity= quantity;
+    public void setTotalPrice(Double totalPrice) {
+        this.totalPrice= totalPrice;
     }
     public void setProducts(Set<Product> products) {
         this.products = products;
@@ -58,8 +58,8 @@ public class Sales {
     public Date getDate() {
         return date;
     }
-    public int getQuantity() {
-        return quantity;
+    public Double getTotalPrice() {
+        return totalPrice;
     }
     public Set<Product> getProducts() {
         return products;
