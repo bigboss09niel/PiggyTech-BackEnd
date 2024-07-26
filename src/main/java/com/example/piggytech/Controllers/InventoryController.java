@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.piggytech.DTO.InventoryDTO;
@@ -39,39 +41,59 @@ public class InventoryController {
 
     // GET ALL INVENTORY
     @GetMapping("/all")
-    public List<InventoryDTO> getInventory(){
-        List<Inventory> inventories = inventoryRepository.findAll();
-        return inventories.stream()
-            .map(inventory -> new InventoryDTO(
-                inventory.getProduct().iterator().next().getProductName(),
-                inventory.getReceivedDate(),
-                inventory.getExpirationDate(),
-                inventory.getQuantity()
-        ))
-        .collect(Collectors.toList());
-    }
+    public ResponseEntity<List<InventoryDTO>> getInventory(@RequestParam(required = false) String search) {
+        List<Inventory> inventories;
+    
+        if (search != null && !search.isEmpty()) {
+            inventories = inventoryRepository.findByProductNameContainingIgnoreCase(search);
+        } else {
+            inventories = inventoryRepository.findAll();
+        }
 
+        List<InventoryDTO> inventoryDTOs = inventories.stream()
+            .map(inventory -> {
+                String productName = inventory.getProduct().iterator().next().getProductName();
+                return new InventoryDTO(
+                    productName,
+                    inventory.getReceivedDate(),
+                    inventory.getExpirationDate(),
+                    inventory.getQuantity()
+                );
+            })
+            .collect(Collectors.toList());
+    
+        return new ResponseEntity<>(inventoryDTOs, HttpStatus.OK);
+    }
+    
     // GET ONE INVENTORY
     @GetMapping("/{id}")
-    public Inventory getProduct(@PathVariable Long id){
-        return inventoryRepository.findById(id)
-        .orElseThrow(()-> new InventoryNotFoundException(id));
+    public ResponseEntity<InventoryDTO> getInventory(@PathVariable Long id) {
+        Inventory inventory = inventoryRepository.findById(id)
+            .orElseThrow(() -> new InventoryNotFoundException(id));
+        
+        String productName = inventory.getProduct().iterator().next().getProductName();
+        InventoryDTO inventoryDTO = new InventoryDTO(
+            productName,
+            inventory.getReceivedDate(),
+            inventory.getExpirationDate(),
+            inventory.getQuantity()
+        );
+        
+        return new ResponseEntity<>(inventoryDTO, HttpStatus.OK);
     }
 
     // CREATE ENDPOINTS
+    @Transactional
     @PostMapping("/new")
-    public ResponseEntity<?> addInventoryEntity(@RequestBody InventoryDTO entity){
-        // Find the product by its name
+    public ResponseEntity<String> addInventory(@RequestBody InventoryDTO entity) {
         Product product = productRepository.findByProductName(entity.getProductName());
         if (product == null) {
             return new ResponseEntity<>("Product not found", HttpStatus.NOT_FOUND);
         }
 
-        // Update the product's stock
         product.setStock(product.getStock() + entity.getQuantity());
         productRepository.save(product);
 
-        // Create the new inventory entry
         Inventory inventory = new Inventory(
             entity.getReceivedDate(),
             entity.getExpirationDate(),
@@ -83,34 +105,43 @@ public class InventoryController {
         return new ResponseEntity<>("A new inventory is added. Yey!", HttpStatus.OK);
     }
 
-
     // UPDATE ENDPOINTS
+    @Transactional
     @PutMapping("/edit/{id}")
-    public Inventory updateInventory(@PathVariable Long id,
-    @RequestBody InventoryDTO entity){
-        Inventory newInventory = new Inventory(
-            entity.getReceivedDate(),
-            entity.getExpirationDate(),
-            entity.getQuantity()
-        );
+    public ResponseEntity<Inventory> updateInventory(@PathVariable Long id, @RequestBody InventoryDTO entity) {
         Product product = productRepository.findByProductName(entity.getProductName());
-        return inventoryRepository.findById(id)
-        .map(inventory ->{
-            inventory.setReceivedDate(newInventory.getReceivedDate());
-            inventory.setExpirationDate(newInventory.getExpirationDate());
-            inventory.setQuantity(newInventory.getQuantity());
-            inventory.setProduct(Collections.singleton(product));
-            return inventoryRepository.save(inventory);
-        }).orElseGet(()->{
-            return inventoryRepository.save(newInventory);
-        });
+        if (product == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+
+        Inventory updatedInventory = inventoryRepository.findById(id)
+            .map(inventory -> {
+                inventory.setReceivedDate(entity.getReceivedDate());
+                inventory.setExpirationDate(entity.getExpirationDate());
+                inventory.setQuantity(entity.getQuantity());
+                inventory.setProduct(Collections.singleton(product));
+                return inventoryRepository.save(inventory);
+            }).orElseGet(() -> {
+                Inventory newInventory = new Inventory(
+                    entity.getReceivedDate(),
+                    entity.getExpirationDate(),
+                    entity.getQuantity()
+                );
+                newInventory.setProduct(Collections.singleton(product));
+                return inventoryRepository.save(newInventory);
+            });
+        
+        return new ResponseEntity<>(updatedInventory, HttpStatus.OK);
     }
 
     // DELETE ENDPOINTS
     @DeleteMapping("/delete/{id}")
-    public String deleteInventory(@PathVariable Long id){
+    public ResponseEntity<String> deleteInventory(@PathVariable Long id) {
+        if (!inventoryRepository.existsById(id)) {
+            return new ResponseEntity<>("Inventory not found", HttpStatus.NOT_FOUND);
+        }
+        
         inventoryRepository.deleteById(id);
-        return "A inventory is deleted!";
+        return new ResponseEntity<>("A inventory is deleted!", HttpStatus.OK);
     }
-
 }
