@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.piggytech.DTO.InventoryDTO;
@@ -39,16 +40,28 @@ public class InventoryController {
 
     // GET ALL INVENTORY
     @GetMapping("/all")
-    public List<InventoryDTO> getInventory(){
-        List<Inventory> inventories = inventoryRepository.findAll();
-        return inventories.stream()
-            .map(inventory -> new InventoryDTO(
-                inventory.getProduct().iterator().next().getProductName(),
-                inventory.getReceivedDate(),
-                inventory.getExpirationDate(),
-                inventory.getQuantity()
-        ))
-        .collect(Collectors.toList());
+    public ResponseEntity<List<InventoryDTO>> getInventory(@RequestParam(required = false) String search) {
+        List<Inventory> inventories;
+    
+        if (search != null && !search.isEmpty()) {
+            inventories = inventoryRepository.findByProductNameContainingIgnoreCase(search);
+        } else {
+            inventories = inventoryRepository.findAll();
+        }
+
+        List<InventoryDTO> inventoryDTOs = inventories.stream()
+            .map(inventory -> {
+                String productName = inventory.getProduct().iterator().next().getProductName();
+                return new InventoryDTO(
+                    productName,
+                    inventory.getReceivedDate(),
+                    inventory.getExpirationDate(),
+                    inventory.getQuantity()
+                );
+            })
+            .collect(Collectors.toList());
+    
+        return new ResponseEntity<>(inventoryDTOs, HttpStatus.OK);
     }
 
     // GET ONE INVENTORY

@@ -56,33 +56,44 @@ public class UserDetailController {
             entity.getGender(),
             entity.getCreatedAt()
         );
-        UserAuth userAuth = userAuthRepository.findByEmail(entity.getEmail());
+
+        // Use Optional to get the UserAuth object
+        UserAuth userAuth = userAuthRepository.findByEmail(entity.getEmail())
+            .orElseThrow(() -> new RuntimeException("User not found")); // Handle user not found
+
         userDetail.setUserAuth(userAuth);
         userDetailRepository.save(userDetail);
-        return new ResponseEntity<>("User details add successfully", HttpStatus.OK);
+        return new ResponseEntity<>("User details added successfully", HttpStatus.OK);
     }
 
+
     @PutMapping("/edit/{id}")
-    public UserDetail updateUserDetail(@PathVariable Long id,
-    @RequestBody UserDetailDTO entity){
+    public UserDetail updateUserDetail(@PathVariable Long id, @RequestBody UserDetailDTO entity) {
         UserDetail newUserDetail = new UserDetail(
             entity.getAddress(),
             entity.getPhone(),
             entity.getGender(),
             entity.getCreatedAt()
         );
-        UserAuth userAuth = userAuthRepository.findByEmail(entity.getEmail());
+    
+        // Use Optional to get the UserAuth object
+        UserAuth userAuth = userAuthRepository.findByEmail(entity.getEmail())
+            .orElseThrow(() -> new RuntimeException("User not found")); // Handle user not found
+    
         return userDetailRepository.findById(id)
-        .map(userDetail ->{
-            userDetail.setAddress(newUserDetail.getAddress());
-            userDetail.setPhone(newUserDetail.getPhone());
-            userDetail.setGender(newUserDetail.getGender());
-            userDetail.setCreatedAt(newUserDetail.getCreatedAt());
-            userDetail.setUserAuth(userAuth);
-            return userDetailRepository.save(userDetail);
-        }).orElseGet(()->{
-            return userDetailRepository.save(newUserDetail);
-        });
+            .map(userDetail -> {
+                userDetail.setAddress(newUserDetail.getAddress());
+                userDetail.setPhone(newUserDetail.getPhone());
+                userDetail.setGender(newUserDetail.getGender());
+                userDetail.setCreatedAt(newUserDetail.getCreatedAt());
+                userDetail.setUserAuth(userAuth);
+                return userDetailRepository.save(userDetail);
+            }).orElseGet(() -> {
+                // If userDetail is not found, set userAuth and save new userDetail
+                newUserDetail.setUserAuth(userAuth);
+                return userDetailRepository.save(newUserDetail);
+            });
     }
+    
 
 }
