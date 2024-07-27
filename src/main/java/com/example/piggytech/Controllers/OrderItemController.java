@@ -5,8 +5,8 @@ import com.example.piggytech.Model.Order;
 import com.example.piggytech.Model.OrderItem;
 import com.example.piggytech.Model.Product;
 import com.example.piggytech.Repository.OrderItemRepository;
-import com.example.piggytech.Repository.OrderRepository; // Import OrderRepository
-import com.example.piggytech.Repository.ProductRepository; // Import ProductRepository
+import com.example.piggytech.Repository.OrderRepository;
+import com.example.piggytech.Repository.ProductRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -18,16 +18,15 @@ import java.util.List;
 public class OrderItemController {
 
     private final OrderItemRepository orderItemRepository;
-    private final OrderRepository orderRepository; // Add OrderRepository
-    private final ProductRepository productRepository; // Add ProductRepository
+    private final OrderRepository orderRepository;
+    private final ProductRepository productRepository;
 
-    // Constructor for dependency injection
-    public OrderItemController(OrderItemRepository orderItemRepository, 
-                               OrderRepository orderRepository, 
+    public OrderItemController(OrderItemRepository orderItemRepository,
+                               OrderRepository orderRepository,
                                ProductRepository productRepository) {
         this.orderItemRepository = orderItemRepository;
-        this.orderRepository = orderRepository; // Initialize OrderRepository
-        this.productRepository = productRepository; // Initialize ProductRepository
+        this.orderRepository = orderRepository;
+        this.productRepository = productRepository;
     }
 
     @GetMapping("/all")
@@ -45,19 +44,17 @@ public class OrderItemController {
 
     @PostMapping("/new")
     public ResponseEntity<String> addOrderItem(@RequestBody OrderItemDTO orderItemDTO) {
-        // Fetch Order and Product from their repositories
         Order order = orderRepository.findById(orderItemDTO.getOrderId())
             .orElseThrow(() -> new RuntimeException("Order not found"));
 
         Product product = productRepository.findById(orderItemDTO.getProductId())
             .orElseThrow(() -> new RuntimeException("Product not found"));
 
-        // Create and save the new OrderItem
         OrderItem newOrderItem = new OrderItem();
         newOrderItem.setQuantity(orderItemDTO.getQuantity());
         newOrderItem.setPrice(orderItemDTO.getPrice());
-        newOrderItem.setOrder(order); // Set the order
-        newOrderItem.setProduct(product); // Set the product
+        newOrderItem.setOrder(order);
+        newOrderItem.setProduct(product);
 
         orderItemRepository.save(newOrderItem);
         return new ResponseEntity<>("A new order item is added.", HttpStatus.CREATED);
