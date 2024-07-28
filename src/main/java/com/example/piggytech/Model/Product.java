@@ -1,5 +1,7 @@
 package com.example.piggytech.Model;
 
+import java.util.stream.Stream;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
@@ -63,6 +65,11 @@ public class Product {
     }
     public String getPhoto() {
         return photo;
+    }
+
+    public Stream<OrderItem> map(Object object) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'map'");
     }
 
 }

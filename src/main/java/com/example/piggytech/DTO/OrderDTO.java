@@ -6,14 +6,14 @@ public class OrderDTO {
 
     private double totalAmount;
     private Date orderDate;
-    private String email; // Change from Long userAuthId to String email
+    private String username;
 
     // Constructors
     public OrderDTO() {}
-    public OrderDTO(double totalAmount, Date orderDate, String email) {
+    public OrderDTO(double totalAmount, Date orderDate, String username) {
         this.totalAmount = totalAmount;
         this.orderDate = orderDate;
-        this.email = email; // Set the email
+        this.username = username; // Set the email
     }
 
     // Setters and Getters
@@ -29,10 +29,10 @@ public class OrderDTO {
     public void setOrderDate(Date orderDate) {
         this.orderDate = orderDate;
     }
-    public String getEmail() {
-        return email;
+    public String getUsername() {
+        return username;
     }
-    public void setEmail(String email) {
-        this.email = email;
+    public void setUsername(String username) {
+        this.username = username;
     }
 }

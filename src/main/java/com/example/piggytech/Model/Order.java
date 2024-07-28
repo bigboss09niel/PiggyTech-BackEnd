@@ -21,7 +21,7 @@ public class Order {
     private Date orderDate;
 
     @Column(nullable = false) // Add this line to specify NOT NULL constraint
-    private String email; // New field for email
+    private String username; // New field for email
 
     @ManyToOne
     @JoinColumn(name = "userAuth_id", nullable = false)
@@ -29,10 +29,10 @@ public class Order {
 
     public Order() {}
 
-    public Order(double totalAmount, Date orderDate, String email, UserAuth userAuth) {
+    public Order(double totalAmount, Date orderDate, String username, UserAuth userAuth) {
         this.totalAmount = totalAmount;
         this.orderDate = orderDate;
-        this.email = email; // Initialize email
+        this.username = username; // Initialize email
         this.userAuth = userAuth;
     }
 
@@ -55,11 +55,11 @@ public class Order {
     public void setOrderDate(Date orderDate) {
         this.orderDate = orderDate;
     }
-    public String getEmail() {
-        return email;
+    public String getUsername() {
+        return username;
     }
-    public void setEmail(String email) {
-        this.email = email;
+    public void setUsername(String username) {
+        this.username = username;
     }
     public UserAuth getUserAuth() {
         return userAuth;

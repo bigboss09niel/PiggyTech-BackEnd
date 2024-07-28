@@ -50,11 +50,20 @@ public class OrderItemController {
         Product product = productRepository.findById(orderItemDTO.getProductId())
             .orElseThrow(() -> new RuntimeException("Product not found"));
 
+        if (product.getStock() < orderItemDTO.getQuantity()) {
+            return new ResponseEntity<>("Not enough product quantity available.", HttpStatus.BAD_REQUEST);
+        }
+
         OrderItem newOrderItem = new OrderItem();
         newOrderItem.setQuantity(orderItemDTO.getQuantity());
         newOrderItem.setPrice(orderItemDTO.getPrice());
         newOrderItem.setOrder(order);
         newOrderItem.setProduct(product);
+
+        // Reduce the product stock and increase the product sold
+        product.setStock(product.getStock() - orderItemDTO.getQuantity());
+        product.setSold(product.getSold() + orderItemDTO.getQuantity());
+        productRepository.save(product);
 
         orderItemRepository.save(newOrderItem);
         return new ResponseEntity<>("A new order item is added.", HttpStatus.CREATED);
