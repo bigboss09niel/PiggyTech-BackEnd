@@ -25,34 +25,6 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Table structure for table `cart`
---
-
-CREATE TABLE `cart` (
-  `id` bigint(20) NOT NULL,
-  `quantity` bigint(20) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `cart_seq`
---
-
-CREATE TABLE `cart_seq` (
-  `next_val` bigint(20) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `cart_seq`
---
-
-INSERT INTO `cart_seq` (`next_val`) VALUES
-(1);
-
--- --------------------------------------------------------
-
---
 -- Table structure for table `inventory`
 --
 
@@ -284,12 +256,6 @@ INSERT INTO `user_role` (`used_id`, `role_id`) VALUES
 --
 -- Indexes for dumped tables
 --
-
---
--- Indexes for table `cart`
---
-ALTER TABLE `cart`
-  ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `inventory`
