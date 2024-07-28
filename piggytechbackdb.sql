@@ -3,6 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
+
 -- Generation Time: Jul 28, 2024 at 03:06 AM
 -- Server version: 10.4.25-MariaDB
 -- PHP Version: 8.1.10
@@ -24,6 +25,34 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `cart`
+--
+
+CREATE TABLE `cart` (
+  `id` bigint(20) NOT NULL,
+  `quantity` bigint(20) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `cart_seq`
+--
+
+CREATE TABLE `cart_seq` (
+  `next_val` bigint(20) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `cart_seq`
+--
+
+INSERT INTO `cart_seq` (`next_val`) VALUES
+(1);
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `inventory`
 --
 
@@ -32,7 +61,7 @@ CREATE TABLE `inventory` (
   `expiration_date` datetime(6) DEFAULT NULL,
   `quantity` int(11) NOT NULL,
   `received_date` datetime(6) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -42,7 +71,7 @@ CREATE TABLE `inventory` (
 
 CREATE TABLE `inventory_seq` (
   `next_val` bigint(20) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `inventory_seq`
@@ -113,7 +142,7 @@ CREATE TABLE `product_inventory` (
 
 CREATE TABLE `product_seq` (
   `next_val` bigint(20) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `product_seq`
@@ -131,7 +160,7 @@ INSERT INTO `product_seq` (`next_val`) VALUES
 CREATE TABLE `role` (
   `id` bigint(20) NOT NULL,
   `name` varchar(255) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `role`
@@ -150,7 +179,7 @@ INSERT INTO `role` (`id`, `name`) VALUES
 CREATE TABLE `userauth_userdetail` (
   `user_auth_id` bigint(20) DEFAULT NULL,
   `user_detail_id` bigint(20) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `userauth_userdetail`
@@ -187,7 +216,7 @@ INSERT INTO `user_auth` (`id`, `email`, `password`, `username`) VALUES
 
 CREATE TABLE `user_auth_seq` (
   `next_val` bigint(20) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `user_auth_seq`
@@ -225,7 +254,7 @@ INSERT INTO `user_detail` (`user_detail_id`, `address`, `created_at`, `gender`, 
 
 CREATE TABLE `user_detail_seq` (
   `next_val` bigint(20) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `user_detail_seq`
@@ -243,7 +272,7 @@ INSERT INTO `user_detail_seq` (`next_val`) VALUES
 CREATE TABLE `user_role` (
   `used_id` bigint(20) NOT NULL,
   `role_id` bigint(20) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `user_role`
@@ -255,6 +284,12 @@ INSERT INTO `user_role` (`used_id`, `role_id`) VALUES
 --
 -- Indexes for dumped tables
 --
+
+--
+-- Indexes for table `cart`
+--
+ALTER TABLE `cart`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `inventory`
