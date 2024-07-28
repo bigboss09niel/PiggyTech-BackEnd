@@ -1,50 +1,68 @@
 package com.example.piggytech.Model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 @Entity
-@Table(name = "orderItem")
+@Table(name = "order_item")
 public class OrderItem {
 
-    private @Id
-    @GeneratedValue Long id;
-    private Long quantity;
-    private Double price;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    
+    @Column(nullable = false)
+    private int quantity;
+    
+    @Column(nullable = false)
+    private double price;
 
+    @ManyToOne
+    @JoinColumn(name = "order_id", nullable = false)
+    private Order order;
 
-    OrderItem(){}
+    @ManyToOne
+    @JoinColumn(name = "product_id", nullable = false)
+    private Product product;
 
-    //Constructors
-    public OrderItem(Long quantity, Double price) {
+    public OrderItem() {}
+
+    public OrderItem(int quantity, double price, Order order, Product product) {
         this.quantity = quantity;
         this.price = price;
+        this.order = order;
+        this.product = product;
     }
 
-    //setters
-    public void setQuantity(Long quantity) {
-        this.quantity = quantity;
-    }
-
-
-    public void setPrice(Double price) {
-        this.price = price;
-    }
-
-    //getters
+    // Getters and setters
     public Long getId() {
         return id;
     }
-
-
-    public Long getQuantity() {
+    public void setId(Long id) {
+        this.id = id;
+    }
+    public int getQuantity() {
         return quantity;
     }
-
-
-    public Double getPrice() {
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
+    }
+    public double getPrice() {
         return price;
     }
+    public void setPrice(double price) {
+        this.price = price;
+    }
+    public Order getOrder() {
+        return order;
+    }
+    public void setOrder(Order order) {
+        this.order = order;
+    }
+    public Product getProduct() {
+        return product;
+    }
+    public void setProduct(Product product) {
+        this.product = product;
+    }
+
 }

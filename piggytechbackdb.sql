@@ -3,9 +3,10 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 26, 2024 at 08:17 AM
--- Server version: 10.4.27-MariaDB
--- PHP Version: 8.2.0
+
+-- Generation Time: Jul 28, 2024 at 03:06 AM
+-- Server version: 10.4.25-MariaDB
+-- PHP Version: 8.1.10
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -62,16 +63,6 @@ CREATE TABLE `inventory` (
   `received_date` datetime(6) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
---
--- Dumping data for table `inventory`
---
-
-INSERT INTO `inventory` (`id`, `expiration_date`, `quantity`, `received_date`) VALUES
-(52, '2024-07-20 08:00:00.000000', 2, '2024-07-19 08:00:00.000000'),
-(53, '2024-07-21 08:00:00.000000', 2, '2024-07-20 12:00:00.000000'),
-(102, '2024-07-31 08:00:00.000000', 20, '2024-07-26 08:00:00.000000'),
-(103, '2024-07-31 08:00:00.000000', 32, '2024-07-26 08:00:00.000000');
-
 -- --------------------------------------------------------
 
 --
@@ -87,7 +78,7 @@ CREATE TABLE `inventory_seq` (
 --
 
 INSERT INTO `inventory_seq` (`next_val`) VALUES
-(201);
+(1);
 
 -- --------------------------------------------------------
 
@@ -97,26 +88,11 @@ INSERT INTO `inventory_seq` (`next_val`) VALUES
 
 CREATE TABLE `order_item` (
   `id` bigint(20) NOT NULL,
-  `price` double DEFAULT NULL,
-  `quantity` bigint(20) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `order_item_seq`
---
-
-CREATE TABLE `order_item_seq` (
-  `next_val` bigint(20) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `order_item_seq`
---
-
-INSERT INTO `order_item_seq` (`next_val`) VALUES
-(1);
+  `price` double NOT NULL,
+  `quantity` int(11) NOT NULL,
+  `order_id` bigint(20) NOT NULL,
+  `product_id` bigint(20) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
 
@@ -126,26 +102,11 @@ INSERT INTO `order_item_seq` (`next_val`) VALUES
 
 CREATE TABLE `order_tbl` (
   `id` bigint(20) NOT NULL,
-  `order_date` datetime(6) DEFAULT NULL,
-  `total_price` double DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `order_tbl_seq`
---
-
-CREATE TABLE `order_tbl_seq` (
-  `next_val` bigint(20) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `order_tbl_seq`
---
-
-INSERT INTO `order_tbl_seq` (`next_val`) VALUES
-(1);
+  `order_date` datetime(6) NOT NULL,
+  `total_amount` double NOT NULL,
+  `username` varchar(255) NOT NULL,
+  `user_auth_id` bigint(20) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
 
@@ -155,24 +116,12 @@ INSERT INTO `order_tbl_seq` (`next_val`) VALUES
 
 CREATE TABLE `product` (
   `id` bigint(20) NOT NULL,
+  `photo` varchar(255) DEFAULT NULL,
   `price` double DEFAULT NULL,
   `product_name` varchar(255) DEFAULT NULL,
   `sold` bigint(20) DEFAULT NULL,
-  `stock` bigint(20) DEFAULT NULL,
-  `photo` varchar(255) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `product`
---
-
-INSERT INTO `product` (`id`, `price`, `product_name`, `sold`, `stock`, `photo`) VALUES
-(1, 1250, 'Mega', 15, 28, 'https://cdn.vectorstock.com/i/1000v/09/60/piggy-vector-2900960.jpg'),
-(2, 1400, 'Cj Supreme Pre', 14, 25, 'https://cdn.vectorstock.com/i/1000v/09/60/piggy-vector-2900960.jpg'),
-(3, 1350, 'Muscle Max', 14, 57, 'https://cdn.vectorstock.com/i/1000v/09/60/piggy-vector-2900960.jpg'),
-(52, 1100, 'Express', 0, 0, 'https://cdn.vectorstock.com/i/1000v/09/60/piggy-vector-2900960.jpg'),
-(102, 1000, 'Oink', 0, 0, 'https://cdn.vectorstock.com/i/1000v/09/60/piggy-vector-2900960.jpg'),
-(152, 150, 'baboyy', 0, 20, 'https://cdn.vectorstock.com/i/1000v/09/60/piggy-vector-2900960.jpg');
+  `stock` bigint(20) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
 
@@ -183,17 +132,7 @@ INSERT INTO `product` (`id`, `price`, `product_name`, `sold`, `stock`, `photo`) 
 CREATE TABLE `product_inventory` (
   `inventory_id` bigint(20) NOT NULL,
   `product_id` bigint(20) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `product_inventory`
---
-
-INSERT INTO `product_inventory` (`inventory_id`, `product_id`) VALUES
-(52, 1),
-(53, 2),
-(102, 152),
-(103, 3);
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
 
@@ -210,7 +149,7 @@ CREATE TABLE `product_seq` (
 --
 
 INSERT INTO `product_seq` (`next_val`) VALUES
-(251);
+(1);
 
 -- --------------------------------------------------------
 
@@ -247,15 +186,7 @@ CREATE TABLE `userauth_userdetail` (
 --
 
 INSERT INTO `userauth_userdetail` (`user_auth_id`, `user_detail_id`) VALUES
-(1, 1),
-(2, 2),
-(52, 52),
-(102, 53),
-(152, 102),
-(202, 152),
-(252, 202),
-(302, 252),
-(403, 302);
+(1, 1);
 
 -- --------------------------------------------------------
 
@@ -265,25 +196,17 @@ INSERT INTO `userauth_userdetail` (`user_auth_id`, `user_detail_id`) VALUES
 
 CREATE TABLE `user_auth` (
   `id` bigint(20) NOT NULL,
-  `email` varchar(255) DEFAULT NULL,
-  `password` varchar(255) DEFAULT NULL,
-  `username` varchar(255) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+  `email` varchar(255) NOT NULL,
+  `password` varchar(255) NOT NULL,
+  `username` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `user_auth`
 --
 
 INSERT INTO `user_auth` (`id`, `email`, `password`, `username`) VALUES
-(1, 'rm@gmail.com', '$2a$10$4qyxm6lfqwC8khhoxeEhCuxDr6SCbsbwc.TdSEbniN6OhW/h7j4GK', 'bossing'),
-(2, 'ro@gmail.com', '$2a$10$k.2PqcaZkpYEnZCtLakRP.vByUUu7fLli7W8TCECNCE.IXoSKbVPG', 'rinalyn'),
-(52, 'vt@gmail.com', '$2a$10$2K5prfJSHsniprTOt/GLsuHEkLNhENeJwdWUYVFNzwSjjozqVjCXy', 'Vhenus'),
-(102, 'yv@gmail.com', '$2a$10$/wFWFOMkTb5EXoyBgzU7i.Q5.5M6JK19orWpB7hcXZo4Pe./hryr2', 'Yana'),
-(152, 'rm09@gmail.com', '$2a$10$oS6/VyWk8p5e6KoAUL.KLu8nlBDGVDjHJOnppHtvQvWA1iVVOzmNm', 'roniel'),
-(202, 'bossing@gmail.com', '$2a$10$pi4i771KMJWCXeq9PdneMeeMFAM1.OePwEgY5az45dkZmzUA.qg/S', 'rm'),
-(252, 'hi@gmail.com', '$2a$10$724emhQ6ekFktTwZEN9N5uKwp0VTmn.2ANxwiElQKpjRDpuVZX5GW', 'hello'),
-(302, 'fa@gmail.com', '$2a$10$/4D0.rlLqNaWesonve/FvOow3WpxJTt1wYCoTbkTgOyCi9uLOlqh6', 'franze'),
-(403, 'hello@gmail.com', '$2a$10$qqMf58ztcr7qbmEUST42YOAdg05GrOUfganhjlI2p8NGfXOpE.8jy', 'hii');
+(1, 'piggytech@gmail.com', '$2a$10$gcYhrCSSvX393d/UhV5ZMu/q5oK2kc74hlB5hyFg7Sq9XPzTaK1zO', 'Piggy Tech');
 
 -- --------------------------------------------------------
 
@@ -300,7 +223,7 @@ CREATE TABLE `user_auth_seq` (
 --
 
 INSERT INTO `user_auth_seq` (`next_val`) VALUES
-(501);
+(51);
 
 -- --------------------------------------------------------
 
@@ -312,24 +235,16 @@ CREATE TABLE `user_detail` (
   `user_detail_id` bigint(20) NOT NULL,
   `address` varchar(255) DEFAULT NULL,
   `created_at` datetime(6) DEFAULT NULL,
-  `phone` varchar(255) DEFAULT NULL,
-  `gender` varchar(255) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+  `gender` varchar(255) DEFAULT NULL,
+  `phone` varchar(255) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `user_detail`
 --
 
-INSERT INTO `user_detail` (`user_detail_id`, `address`, `created_at`, `phone`, `gender`) VALUES
-(1, 'Balayan', '2024-07-22 08:00:00.000000', '09123456789', 'male'),
-(2, 'Calaca, city', '2024-07-19 13:40:31.562566', '09871234567', 'female'),
-(52, 'Calaca City, Batangas', '2024-07-23 04:24:48.000000', '01234567890', 'female'),
-(53, 'Calaca City', '2024-07-23 04:27:04.000000', '09876543210', 'female'),
-(102, 'balayan', '2024-07-26 00:50:49.000000', '65654654165', 'male'),
-(152, 'batngas', '2024-07-26 01:21:13.000000', '56464123156', 'male'),
-(202, '12345678', '2024-07-26 01:32:13.000000', '78945612307', 'male'),
-(252, 'BA', '2024-07-26 01:49:44.000000', '65416846484', 'male'),
-(302, 'ba', '2024-07-26 04:05:53.000000', '21231564687', 'male');
+INSERT INTO `user_detail` (`user_detail_id`, `address`, `created_at`, `gender`, `phone`) VALUES
+(1, 'Calaca, City, Batangas', '2024-07-28 09:06:33.000000', 'male', '12345678910');
 
 -- --------------------------------------------------------
 
@@ -346,7 +261,7 @@ CREATE TABLE `user_detail_seq` (
 --
 
 INSERT INTO `user_detail_seq` (`next_val`) VALUES
-(401);
+(51);
 
 -- --------------------------------------------------------
 
@@ -364,15 +279,7 @@ CREATE TABLE `user_role` (
 --
 
 INSERT INTO `user_role` (`used_id`, `role_id`) VALUES
-(1, 1),
-(2, 2),
-(52, 2),
-(102, 2),
-(152, 2),
-(202, 2),
-(252, 1),
-(302, 2),
-(403, 1);
+(1, 1);
 
 --
 -- Indexes for dumped tables
@@ -394,13 +301,16 @@ ALTER TABLE `inventory`
 -- Indexes for table `order_item`
 --
 ALTER TABLE `order_item`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `FKoobh6e7a2npf6n1lwvukx0c83` (`order_id`),
+  ADD KEY `FK551losx9j75ss5d6bfsqvijna` (`product_id`);
 
 --
 -- Indexes for table `order_tbl`
 --
 ALTER TABLE `order_tbl`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `FKk8nvoweyg8tpt6juhpwlkh1d1` (`user_auth_id`);
 
 --
 -- Indexes for table `product`
@@ -454,6 +364,18 @@ ALTER TABLE `user_role`
 --
 
 --
+-- AUTO_INCREMENT for table `order_item`
+--
+ALTER TABLE `order_item`
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `order_tbl`
+--
+ALTER TABLE `order_tbl`
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT for table `role`
 --
 ALTER TABLE `role`
@@ -462,6 +384,19 @@ ALTER TABLE `role`
 --
 -- Constraints for dumped tables
 --
+
+--
+-- Constraints for table `order_item`
+--
+ALTER TABLE `order_item`
+  ADD CONSTRAINT `FK551losx9j75ss5d6bfsqvijna` FOREIGN KEY (`product_id`) REFERENCES `product` (`id`),
+  ADD CONSTRAINT `FKoobh6e7a2npf6n1lwvukx0c83` FOREIGN KEY (`order_id`) REFERENCES `order_tbl` (`id`);
+
+--
+-- Constraints for table `order_tbl`
+--
+ALTER TABLE `order_tbl`
+  ADD CONSTRAINT `FKk8nvoweyg8tpt6juhpwlkh1d1` FOREIGN KEY (`user_auth_id`) REFERENCES `user_auth` (`id`);
 
 --
 -- Constraints for table `product_inventory`

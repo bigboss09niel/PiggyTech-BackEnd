@@ -1,54 +1,117 @@
 package com.example.piggytech.Controllers;
 
-import java.util.List;
-
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
+import com.example.piggytech.DTO.OrderDTO;
+import com.example.piggytech.DTO.OrderItemDTO;
 import com.example.piggytech.Model.Order;
-import com.example.piggytech.NotFoundException.OrderNotFoundException;
+import com.example.piggytech.Model.OrderItem;
+import com.example.piggytech.Model.UserAuth;
+import com.example.piggytech.Repository.OrderItemRepository;
 import com.example.piggytech.Repository.OrderRepository;
+import com.example.piggytech.Repository.UserAuthRepository;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.Date; // Import Date
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/v1/order")
 public class OrderController {
-    
-    final OrderRepository repo;
 
-    public OrderController(OrderRepository repo) {
-        this.repo = repo;
-    }
+    @Autowired
+    private OrderRepository orderRepository;
 
-    // GET ALL SALES
+    @Autowired
+    private UserAuthRepository userAuthRepository;
+
+    @Autowired
+    private OrderItemRepository orderItemRepository;
+
     @GetMapping("/all")
-    public List<Order> getOrder(){
-        return repo.findAll();
-    }
+public ResponseEntity<List<Map<String, Object>>> getAllOrders() {
+    List<OrderItem> orderItems = orderItemRepository.findAll();
 
-    // GET ONE INVENTORY
+    // Group order items by their order
+    Map<Order, List<OrderItem>> groupedOrders = orderItems.stream()
+            .collect(Collectors.groupingBy(OrderItem::getOrder));
+
+    // Build the response
+    List<Map<String, Object>> response = groupedOrders.entrySet().stream().map(entry -> {
+        Order order = entry.getKey();
+        List<OrderItem> items = entry.getValue();
+
+        List<Map<String, Object>> products = items.stream().map(orderItem -> {
+            Map<String, Object> productMap = new HashMap<>();
+            productMap.put("productName", orderItem.getProduct().getProductName());
+            productMap.put("price", orderItem.getPrice());
+            productMap.put("quantity", orderItem.getQuantity());
+            return productMap;
+        }).collect(Collectors.toList());
+
+        Map<String, Object> userMap = new HashMap<>();
+        userMap.put("id", order.getId());
+        userMap.put("totalAmount", order.getTotalAmount());
+        userMap.put("orderDate", order.getOrderDate());
+        userMap.put("username", order.getUsername());
+        userMap.put("products", products); // Add the list of products
+
+        return userMap;
+    }).collect(Collectors.toList());
+
+    return new ResponseEntity<>(response, HttpStatus.OK);
+}
+
+
     @GetMapping("/{id}")
-    public Order getSalesyById(@PathVariable Long id){
-        return repo.findById(id)
-        .orElseThrow(()-> new OrderNotFoundException(id));
+    public ResponseEntity<Order> getOrderById(@PathVariable Long id) {
+        Optional<Order> order = orderRepository.findById(id);
+        return order.map(o -> new ResponseEntity<>(o, HttpStatus.OK))
+                    .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
-    // CREATE ENDPOINTS
     @PostMapping("/new")
-    public String addOrder(@RequestBody Order newOrder){
-        repo.save(newOrder);
-        return "A new Order is added!";
+    public ResponseEntity<Order> createOrder(@RequestBody OrderDTO orderDTO) {
+        UserAuth userAuth = userAuthRepository.findByUsername(orderDTO.getUsername())
+            .orElseThrow(() -> new RuntimeException("User not found"));
+
+        // Create Order object
+        Order order = new Order();
+        order.setTotalAmount(orderDTO.getTotalAmount());
+        order.setOrderDate(new Date()); // Use current date
+        order.setUsername(orderDTO.getUsername()); // Set the email
+        order.setUserAuth(userAuth); // Set the UserAuth object
+
+        Order savedOrder = orderRepository.save(order);
+        return new ResponseEntity<>(savedOrder, HttpStatus.CREATED);
     }
 
-    // DELETE ENDPOINTS
+    @PutMapping("/update/{id}")
+    public ResponseEntity<Order> updateOrder(@PathVariable Long id, @RequestBody Order orderDetails) {
+        return orderRepository.findById(id)
+            .map(order -> {
+                order.setTotalAmount(orderDetails.getTotalAmount());
+                order.setOrderDate(orderDetails.getOrderDate());
+                order.setUserAuth(orderDetails.getUserAuth());
+                Order updatedOrder = orderRepository.save(order);
+                return new ResponseEntity<>(updatedOrder, HttpStatus.OK);
+            })
+            .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    }
+
     @DeleteMapping("/delete/{id}")
-    public String deleteOrder(@PathVariable Long id){
-        repo.deleteById(id);
-        return "A order is deleted!";
+    public ResponseEntity<Void> deleteOrder(@PathVariable Long id) {
+        if (orderRepository.existsById(id)) {
+            orderRepository.deleteById(id);
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
-
 }

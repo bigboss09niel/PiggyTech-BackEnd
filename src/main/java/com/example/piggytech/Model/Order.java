@@ -1,49 +1,70 @@
 package com.example.piggytech.Model;
 
+import jakarta.persistence.*;
 import java.util.Date;
-
 import org.hibernate.annotations.CreationTimestamp;
-
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "order_tbl")
 public class Order {
 
-    private @Id
-    @GeneratedValue Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column(nullable = false)
+    private double totalAmount;
+
     @CreationTimestamp
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(nullable = false, updatable = false)
     private Date orderDate;
-    private Double totalPrice;
 
-    Order(){}
+    @Column(nullable = false) // Add this line to specify NOT NULL constraint
+    private String username; // New field for email
 
-    // Constructors
-    public Order(Date orderDate, Double totalPrice) {
+    @ManyToOne
+    @JoinColumn(name = "userAuth_id", nullable = false)
+    private UserAuth userAuth;
+
+    public Order() {}
+
+    public Order(double totalAmount, Date orderDate, String username, UserAuth userAuth) {
+        this.totalAmount = totalAmount;
         this.orderDate = orderDate;
-        this.totalPrice = totalPrice;
+        this.username = username; // Initialize email
+        this.userAuth = userAuth;
     }
 
-    // Setters
-    public void setOrderDate(Date orderDate) {
-        this.orderDate = orderDate;
-    }
-    public void setTotalPrice(Double totalPrice) {
-        this.totalPrice= totalPrice;
-    }
-
-     // Getters
+    // Getters and setters
     public Long getId() {
         return id;
+    }
+    public void setId(Long id) {
+        this.id = id;
+    }
+    public double getTotalAmount() {
+        return totalAmount;
+    }
+    public void setTotalAmount(double totalAmount) {
+        this.totalAmount = totalAmount;
     }
     public Date getOrderDate() {
         return orderDate;
     }
-    public Double getTotalPrice() {
-        return totalPrice;
+    public void setOrderDate(Date orderDate) {
+        this.orderDate = orderDate;
     }
-
+    public String getUsername() {
+        return username;
+    }
+    public void setUsername(String username) {
+        this.username = username;
+    }
+    public UserAuth getUserAuth() {
+        return userAuth;
+    }
+    public void setUserAuth(UserAuth userAuth) {
+        this.userAuth = userAuth;
+    }
 }

@@ -55,33 +55,33 @@ public class UserAuthController {
     // GET ALL ACCOUNT DETAILS
     @GetMapping("/all")
     public ResponseEntity<List<Map<String, Object>>> getAllUserDetails(@RequestParam(required = false) String search) {
-    List<UserDetail> userDetails;
-    
-    if (search != null && !search.isEmpty()) {
-        // Filter user details based on the search parameter
-        userDetails = userDetailRepository.findByUserAuthUsernameContainingIgnoreCase(search);
-    } else {
-        // Retrieve all user details if no search parameter is provided
-        userDetails = userDetailRepository.findAll();
+        List<UserDetail> userDetails;
+        
+        if (search != null && !search.isEmpty()) {
+            // Filter user details based on the search parameter
+            userDetails = userDetailRepository.findByUserAuthUsernameContainingIgnoreCase(search);
+        } else {
+            // Retrieve all user details if no search parameter is provided
+            userDetails = userDetailRepository.findAll();
+        }
+
+        List<Map<String, Object>> response = userDetails.stream().map(userDetail -> {
+            UserAuth userAuth = userDetail.getUserAuth();
+
+            Map<String, Object> userMap = new HashMap<>();
+            userMap.put("username", userAuth.getUsername());
+            userMap.put("email", userAuth.getEmail());
+            userMap.put("address", userDetail.getAddress());
+            userMap.put("phone", userDetail.getPhone());
+            userMap.put("gender", userDetail.getGender());
+            userMap.put("createdAt", userDetail.getCreatedAt());
+            userMap.put("roles", userAuth.getRoles().stream().map(role -> role.getName()).collect(Collectors.toSet()));
+
+            return userMap;
+        }).collect(Collectors.toList());
+
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
-
-    List<Map<String, Object>> response = userDetails.stream().map(userDetail -> {
-        UserAuth userAuth = userDetail.getUserAuth();
-
-        Map<String, Object> userMap = new HashMap<>();
-        userMap.put("username", userAuth.getUsername());
-        userMap.put("email", userAuth.getEmail());
-        userMap.put("address", userDetail.getAddress());
-        userMap.put("phone", userDetail.getPhone());
-        userMap.put("gender", userDetail.getGender());
-        userMap.put("createdAt", userDetail.getCreatedAt());
-        userMap.put("roles", userAuth.getRoles().stream().map(role -> role.getName()).collect(Collectors.toSet()));
-
-        return userMap;
-    }).collect(Collectors.toList());
-
-    return new ResponseEntity<>(response, HttpStatus.OK);
-}
 
     // REGISTER FOR ADMIN
     @PostMapping("/register")
