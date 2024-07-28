@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 27, 2024 at 10:29 AM
--- Server version: 10.4.27-MariaDB
--- PHP Version: 8.2.0
+-- Generation Time: Jul 28, 2024 at 03:06 AM
+-- Server version: 10.4.25-MariaDB
+-- PHP Version: 8.1.10
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -24,13 +24,114 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `inventory`
+--
+
+CREATE TABLE `inventory` (
+  `id` bigint(20) NOT NULL,
+  `expiration_date` datetime(6) DEFAULT NULL,
+  `quantity` int(11) NOT NULL,
+  `received_date` datetime(6) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `inventory_seq`
+--
+
+CREATE TABLE `inventory_seq` (
+  `next_val` bigint(20) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `inventory_seq`
+--
+
+INSERT INTO `inventory_seq` (`next_val`) VALUES
+(1);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `order_item`
+--
+
+CREATE TABLE `order_item` (
+  `id` bigint(20) NOT NULL,
+  `price` double NOT NULL,
+  `quantity` int(11) NOT NULL,
+  `order_id` bigint(20) NOT NULL,
+  `product_id` bigint(20) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `order_tbl`
+--
+
+CREATE TABLE `order_tbl` (
+  `id` bigint(20) NOT NULL,
+  `order_date` datetime(6) NOT NULL,
+  `total_amount` double NOT NULL,
+  `username` varchar(255) NOT NULL,
+  `user_auth_id` bigint(20) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `product`
+--
+
+CREATE TABLE `product` (
+  `id` bigint(20) NOT NULL,
+  `photo` varchar(255) DEFAULT NULL,
+  `price` double DEFAULT NULL,
+  `product_name` varchar(255) DEFAULT NULL,
+  `sold` bigint(20) DEFAULT NULL,
+  `stock` bigint(20) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `product_inventory`
+--
+
+CREATE TABLE `product_inventory` (
+  `inventory_id` bigint(20) NOT NULL,
+  `product_id` bigint(20) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `product_seq`
+--
+
+CREATE TABLE `product_seq` (
+  `next_val` bigint(20) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `product_seq`
+--
+
+INSERT INTO `product_seq` (`next_val`) VALUES
+(1);
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `role`
 --
 
 CREATE TABLE `role` (
   `id` bigint(20) NOT NULL,
   `name` varchar(255) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `role`
@@ -49,22 +150,14 @@ INSERT INTO `role` (`id`, `name`) VALUES
 CREATE TABLE `userauth_userdetail` (
   `user_auth_id` bigint(20) DEFAULT NULL,
   `user_detail_id` bigint(20) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `userauth_userdetail`
 --
 
 INSERT INTO `userauth_userdetail` (`user_auth_id`, `user_detail_id`) VALUES
-(1, 1),
-(2, 2),
-(52, 52),
-(102, 53),
-(152, 102),
-(202, 152),
-(252, 202),
-(302, 252),
-(403, 302);
+(1, 1);
 
 -- --------------------------------------------------------
 
@@ -74,25 +167,17 @@ INSERT INTO `userauth_userdetail` (`user_auth_id`, `user_detail_id`) VALUES
 
 CREATE TABLE `user_auth` (
   `id` bigint(20) NOT NULL,
-  `email` varchar(255) DEFAULT NULL,
-  `password` varchar(255) DEFAULT NULL,
-  `username` varchar(255) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+  `email` varchar(255) NOT NULL,
+  `password` varchar(255) NOT NULL,
+  `username` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `user_auth`
 --
 
 INSERT INTO `user_auth` (`id`, `email`, `password`, `username`) VALUES
-(1, 'rm@gmail.com', '$2a$10$4qyxm6lfqwC8khhoxeEhCuxDr6SCbsbwc.TdSEbniN6OhW/h7j4GK', 'bossing'),
-(2, 'ro@gmail.com', '$2a$10$k.2PqcaZkpYEnZCtLakRP.vByUUu7fLli7W8TCECNCE.IXoSKbVPG', 'rinalyn'),
-(52, 'vt@gmail.com', '$2a$10$2K5prfJSHsniprTOt/GLsuHEkLNhENeJwdWUYVFNzwSjjozqVjCXy', 'Vhenus'),
-(102, 'yv@gmail.com', '$2a$10$/wFWFOMkTb5EXoyBgzU7i.Q5.5M6JK19orWpB7hcXZo4Pe./hryr2', 'Yana'),
-(152, 'rm09@gmail.com', '$2a$10$oS6/VyWk8p5e6KoAUL.KLu8nlBDGVDjHJOnppHtvQvWA1iVVOzmNm', 'roniel'),
-(202, 'bossing@gmail.com', '$2a$10$pi4i771KMJWCXeq9PdneMeeMFAM1.OePwEgY5az45dkZmzUA.qg/S', 'rm'),
-(252, 'hi@gmail.com', '$2a$10$724emhQ6ekFktTwZEN9N5uKwp0VTmn.2ANxwiElQKpjRDpuVZX5GW', 'hello'),
-(302, 'fa@gmail.com', '$2a$10$/4D0.rlLqNaWesonve/FvOow3WpxJTt1wYCoTbkTgOyCi9uLOlqh6', 'franze'),
-(403, 'hello@gmail.com', '$2a$10$qqMf58ztcr7qbmEUST42YOAdg05GrOUfganhjlI2p8NGfXOpE.8jy', 'hii');
+(1, 'piggytech@gmail.com', '$2a$10$gcYhrCSSvX393d/UhV5ZMu/q5oK2kc74hlB5hyFg7Sq9XPzTaK1zO', 'Piggy Tech');
 
 -- --------------------------------------------------------
 
@@ -102,14 +187,14 @@ INSERT INTO `user_auth` (`id`, `email`, `password`, `username`) VALUES
 
 CREATE TABLE `user_auth_seq` (
   `next_val` bigint(20) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `user_auth_seq`
 --
 
 INSERT INTO `user_auth_seq` (`next_val`) VALUES
-(501);
+(51);
 
 -- --------------------------------------------------------
 
@@ -121,24 +206,16 @@ CREATE TABLE `user_detail` (
   `user_detail_id` bigint(20) NOT NULL,
   `address` varchar(255) DEFAULT NULL,
   `created_at` datetime(6) DEFAULT NULL,
-  `phone` varchar(255) DEFAULT NULL,
-  `gender` varchar(255) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+  `gender` varchar(255) DEFAULT NULL,
+  `phone` varchar(255) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `user_detail`
 --
 
-INSERT INTO `user_detail` (`user_detail_id`, `address`, `created_at`, `phone`, `gender`) VALUES
-(1, 'Balayan', '2024-07-22 08:00:00.000000', '09123456789', 'male'),
-(2, 'Calaca, city', '2024-07-19 13:40:31.562566', '09871234567', 'female'),
-(52, 'Calaca City, Batangas', '2024-07-23 04:24:48.000000', '01234567890', 'female'),
-(53, 'Calaca City', '2024-07-23 04:27:04.000000', '09876543210', 'female'),
-(102, 'balayan', '2024-07-26 00:50:49.000000', '65654654165', 'male'),
-(152, 'batngas', '2024-07-26 01:21:13.000000', '56464123156', 'male'),
-(202, '12345678', '2024-07-26 01:32:13.000000', '78945612307', 'male'),
-(252, 'BA', '2024-07-26 01:49:44.000000', '65416846484', 'male'),
-(302, 'ba', '2024-07-26 04:05:53.000000', '21231564687', 'male');
+INSERT INTO `user_detail` (`user_detail_id`, `address`, `created_at`, `gender`, `phone`) VALUES
+(1, 'Calaca, City, Batangas', '2024-07-28 09:06:33.000000', 'male', '12345678910');
 
 -- --------------------------------------------------------
 
@@ -148,14 +225,14 @@ INSERT INTO `user_detail` (`user_detail_id`, `address`, `created_at`, `phone`, `
 
 CREATE TABLE `user_detail_seq` (
   `next_val` bigint(20) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `user_detail_seq`
 --
 
 INSERT INTO `user_detail_seq` (`next_val`) VALUES
-(401);
+(51);
 
 -- --------------------------------------------------------
 
@@ -166,26 +243,52 @@ INSERT INTO `user_detail_seq` (`next_val`) VALUES
 CREATE TABLE `user_role` (
   `used_id` bigint(20) NOT NULL,
   `role_id` bigint(20) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `user_role`
 --
 
 INSERT INTO `user_role` (`used_id`, `role_id`) VALUES
-(1, 1),
-(2, 2),
-(52, 2),
-(102, 2),
-(152, 2),
-(202, 2),
-(252, 1),
-(302, 2),
-(403, 1);
+(1, 1);
 
 --
 -- Indexes for dumped tables
 --
+
+--
+-- Indexes for table `inventory`
+--
+ALTER TABLE `inventory`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `order_item`
+--
+ALTER TABLE `order_item`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `FKoobh6e7a2npf6n1lwvukx0c83` (`order_id`),
+  ADD KEY `FK551losx9j75ss5d6bfsqvijna` (`product_id`);
+
+--
+-- Indexes for table `order_tbl`
+--
+ALTER TABLE `order_tbl`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `FKk8nvoweyg8tpt6juhpwlkh1d1` (`user_auth_id`);
+
+--
+-- Indexes for table `product`
+--
+ALTER TABLE `product`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `product_inventory`
+--
+ALTER TABLE `product_inventory`
+  ADD PRIMARY KEY (`inventory_id`,`product_id`),
+  ADD KEY `FK8echmjvoete36r6q97dr6pl7j` (`product_id`);
 
 --
 -- Indexes for table `role`
@@ -226,6 +329,18 @@ ALTER TABLE `user_role`
 --
 
 --
+-- AUTO_INCREMENT for table `order_item`
+--
+ALTER TABLE `order_item`
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `order_tbl`
+--
+ALTER TABLE `order_tbl`
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT for table `role`
 --
 ALTER TABLE `role`
@@ -234,6 +349,26 @@ ALTER TABLE `role`
 --
 -- Constraints for dumped tables
 --
+
+--
+-- Constraints for table `order_item`
+--
+ALTER TABLE `order_item`
+  ADD CONSTRAINT `FK551losx9j75ss5d6bfsqvijna` FOREIGN KEY (`product_id`) REFERENCES `product` (`id`),
+  ADD CONSTRAINT `FKoobh6e7a2npf6n1lwvukx0c83` FOREIGN KEY (`order_id`) REFERENCES `order_tbl` (`id`);
+
+--
+-- Constraints for table `order_tbl`
+--
+ALTER TABLE `order_tbl`
+  ADD CONSTRAINT `FKk8nvoweyg8tpt6juhpwlkh1d1` FOREIGN KEY (`user_auth_id`) REFERENCES `user_auth` (`id`);
+
+--
+-- Constraints for table `product_inventory`
+--
+ALTER TABLE `product_inventory`
+  ADD CONSTRAINT `FK8echmjvoete36r6q97dr6pl7j` FOREIGN KEY (`product_id`) REFERENCES `product` (`id`),
+  ADD CONSTRAINT `FKrp29y97hpxviprydwuh5ndrc8` FOREIGN KEY (`inventory_id`) REFERENCES `inventory` (`id`);
 
 --
 -- Constraints for table `userauth_userdetail`
